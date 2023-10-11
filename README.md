@@ -1,28 +1,150 @@
-![image](https://github.com/vellt/11a-1csop/assets/61885011/551f2e0d-ab6d-4e95-8385-7b4b62fb9777)
+```c#
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/e4913966-a132-4da4-bb64-f061677be3f8)
+namespace gyak_11a_1csop_2023_10_11
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // logikai operátorok
+            // ==, !=, <, >, <=, >=
+            // logikai kapuk:
+            // AND (és): && (altgr +c)
+            // OR (vagy): || (altgr + w)
+            // NOT (negáció): ! (shift + 4)
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/7136384f-5161-470c-a15a-dbb6da3acbb5)
+            // true, false --> bool
+            bool logikaiKif = !(1 == 0) || (1>2); 
+            Console.WriteLine(logikaiKif); // false
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/50274510-8281-479b-aace-f96a1dfdc083)
+            /*
+             Írjunk egy kifejezést, amely azt ellenőrzi, hogy egy szám 
+            páros ÉS pozitív is
+             */
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/77ee41df-96db-4797-8a71-328bd6acfdbb)
+            Console.WriteLine("adj meg egy értéket");
+            int ertek = Convert.ToInt32(Console.ReadLine());
+            if ((ertek % 2 == 0) && (ertek >= 0))
+            {
+                Console.WriteLine("ez a szám páros és pozitív");
+            }
+            else if (!(ertek % 2 == 0) && (ertek >= 0))
+            {
+                Console.WriteLine("ez a szám : PÁRATLAN ÉS POZITÍV ");
+            }
+            else if ((ertek % 2 == 0) && !(ertek >= 0))
+            {
+                Console.WriteLine("Ez a szám páros és negatív");
+            }
+            else if (!(ertek % 2 == 0) && !(ertek >= 0)) 
+            {
+                Console.WriteLine("Páratlan és Negatív");
+            }
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/6f0fc53a-d49e-4d1b-b1a4-b9d713a93317)
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/3e74f497-94d8-49f6-9d0d-78cffd1385ee)
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/711b871f-d8e9-4ff9-acc2-0e3ac2419d86)
+            /*
+             * összetett logikai kifejezéssel helyettesítsük az 
+             * alábbi egyszerű kifejezést
+             */
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/bbbd0a34-76c9-46e9-9219-169fb473adfa)
+            Console.WriteLine("Add meg az x értékét");
+            int x = Convert.ToInt32(Console.ReadLine());
 
-## add meg a dolgozat százalékát és megmondom hogy mennyi lett az érdemjegy
+            if ((x > Math.Pow(2, 3) % 2) && x < (Math.Sqrt(16) % 4 + 1)) // 1
+            {
+                Console.WriteLine("ÍRÁS");
+            }
+            else if ((x > (Math.Sqrt(16) - 5)) && x < (Math.Abs((Math.Pow(2, 2) + 3) * -1) % 2)) // 0
+            {
+                Console.WriteLine("FEJ");
+            }
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/9eeb45c4-891e-47a2-8600-e9374a27aef1)
 
-## add meg h dobókockával mennyit dobtál és kiírom betűvel
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/9d71b6bf-a29a-4b31-9121-cb5979acb7c0)
+            // írjunk egy kif-t ami azt vizsgálja h egy szám osztható 3-al,
+            // vagy 5-el, de nem mind2-vel
 
-![image](https://github.com/vellt/11a-1csop/assets/61885011/dbaae164-37d3-40f7-8472-8a896d82b549)
+            Console.WriteLine("add meg az y értékét");
+            int y = Convert.ToInt32(Console.ReadLine());
 
+            if (((y % 3 == 0) || (y % 5 == 0)) && !((y % 3 == 0) && (y % 5 == 0)))  
+            {
+                Console.WriteLine("Ez egy olyan szám ami 3-al és 5-el oszztható de nem mind a kettővel.");
+            }
+
+            /*
+             4el oszható és 100al nem osztható!
+             */
+            Console.WriteLine("Add meg az évet, és megmondom h szökőév-e");
+
+           
+            int c = Convert.ToInt32(Console.ReadLine());
+
+            if ((c % 4 == 0) && !(c % 100 == 0))
+            {
+                Console.WriteLine("az egy olyan év ami szököév");
+            }
+
+            /*
+             Vizsgáljuk meg a bekért telefonszámot, hogy milyen szolgáltatóhoz
+            tartozik
+             */
+
+            Console.WriteLine("Add meg a 06 utáni telefonszámod");
+            string teloszam = Console.ReadLine();
+            if (teloszam.Length==9)
+            {
+                // valid
+                if (teloszam[0] == '7') Console.WriteLine("Voda");
+                else if (teloszam[0] == '2') Console.WriteLine("Yettel");
+                else if (teloszam[0] == '3') Console.WriteLine("telekom");
+                else if (teloszam[0] == '5') Console.WriteLine("Digi");
+            }
+            else Console.WriteLine("Nem valós a telószám");
+             
+            switch (teloszam.Length)
+            {
+                case 9:
+                    switch (teloszam[0])
+                    {
+                        case '7': Console.WriteLine("voda"); break;
+                        case '2': Console.WriteLine("Yettel"); break;
+                        case '3': Console.WriteLine("telekom"); break;
+                        case '5': Console.WriteLine("digi"); break;
+                    }
+                    break;
+                default: Console.WriteLine("nem valós telefonszám"); break;
+            }
+
+            /*
+             Írjunk egy programot, amely bekéri a hónap
+            számát (1-12), majd kiírja a hónap nevét
+            a megadott szám alapján, 
+             */
+
+            Console.WriteLine("kérlek add meg a hónap számát");
+            int honap = Convert.ToInt32(Console.ReadLine());
+
+            if (honap == 1) Console.WriteLine("Január");
+            else if (honap == 2) Console.WriteLine("Február");
+            else if (honap == 3) Console.WriteLine("Március");
+            else if (honap == 4) Console.WriteLine("Április");
+            else if (honap == 5) Console.WriteLine("Május");
+            else if (honap == 6) Console.WriteLine("Június");
+            else if (honap == 7) Console.WriteLine("Július");
+            else if (honap == 8) Console.WriteLine("Augusztus");
+            else if (honap == 9) Console.WriteLine("Szeptember");
+            else if (honap == 10) Console.WriteLine("Oktober");
+            else if (honap == 11) Console.WriteLine("November");
+            else Console.WriteLine("December");
+
+        }
+    }
+}
+```
