@@ -1,159 +1,93 @@
 ```c#
-//switch---------------------
-Console.WriteLine("kérlek add meg a hónap számát");
-int honap = Convert.ToInt32(Console.ReadLine());
-
-if (honap == 1) Console.WriteLine("Január");
-else if (honap == 2) Console.WriteLine("Február");
-else if (honap == 3) Console.WriteLine("Március");
-else if (honap == 4) Console.WriteLine("Április");
-else if (honap == 5) Console.WriteLine("Május");
-else if (honap == 6) Console.WriteLine("Június");
-else if (honap == 7) Console.WriteLine("Július");
-else if (honap == 8) Console.WriteLine("Augusztus");
-else if (honap == 9) Console.WriteLine("Szeptember");
-else if (honap == 10) Console.WriteLine("Oktober");
-else if (honap == 11) Console.WriteLine("November");
-else Console.WriteLine("December");
-
-// a felső if-else átalakítása switch-be
-switch (honap)
-{
-	case 1: Console.WriteLine("Január"); break;
-	case 2: Console.WriteLine("Február"); break;
-	case 3: Console.WriteLine("Március"); break;
-	case 4: Console.WriteLine("Április"); break;
-	case 5: Console.WriteLine("Május"); break;
-	case 6: Console.WriteLine("Június"); break;
-	case 7: Console.WriteLine("Július"); break;
-	case 8: Console.WriteLine("Augusztus"); break;
-	case 9: Console.WriteLine("Szeptember"); break;
-	case 10: Console.WriteLine("Oktober"); break;
-	case 11: Console.WriteLine("November"); break;
-	default: Console.WriteLine("December"); break; // if else-nél a az utolsó else-nek felel meg!
-}
-
-
-//RANDOM--------------------------
+/* képezzünk intervallumokat */
 Random random = new Random();
-int valt= random.Next(10);//0-9
-int valt2= random.Next(10,20); //10-19
 
-//[10,50]
-int gyak1 = random.Next(41)+10;
-//[11,51]
-int gyak2 = random.Next(41)+11;
-//[-20, -2]
-int gyak3 = random.Next(19)-20;
-// [-60, -35]
-int gyak4 = random.Next(26)-60;
-// [-50,25]
-int gyak5 = random.Next(76)-50;
+//[60,80]
+int sz1 = random.Next(21)+60;
+//[0,7]
+int sz2 = random.Next(8);
+//[-50,60]
+int sz3 = random.Next(111) - 50;
+//[-60,-20]
+int sz4 = random.Next(41) - 60;
+
+//-------------------------------------
+
+bool igazE = false;
+// if else
+if (2 == 3) igazE = false;
+else igazE = true;
+// hármas operátor
+igazE = (2 == 3) ? false : true;
+
+//-------------------------------------
+/*
+ 2 véletlenszámot generáljunk [0,10] és írjuk ki a számokat
+a képernyőre, majd azt h melyik szám a nagyobb! (hármas operátorral)
+ */
+
+Random random1 = new Random();
+
+int szam1 = random1.Next(11);
+int szam2 = random1.Next(11);
+
+if (sz1 > sz2) Console.WriteLine($"a {sz1} nagyobb mint az {sz2}");
+else if (sz1 == sz2) Console.WriteLine($"a(z) {sz1} egyenlő a(z){sz2}");
+else Console.WriteLine($"a {sz2} nagyobb mint az {sz1}");
+
+Console.WriteLine((sz1 > sz2)? $"a {sz1} nagyobb mint az {sz2}": (sz1 == sz2)? $"a(z) {sz1} egyenlő a(z){sz2}": $"a {sz2} nagyobb mint az {sz1}");
 
 
 /*
- Készítsen egy számkitalálós programot! A gép véletlenszerűen 
-találjon ki egy számot 1 és 6 között! A felh-tól kérjen be egy tippet,
-és mondja meg, ha sikerült eltalálnia, ha nem mondja meg mire gondolt
-a költő!
+ Egy véletlen számot [1,10], nézzük meg h páros lett-e vagy práratlan 
+amit generált
  */
+Random random2 = new Random();
+int x = random2.Next(10) + 1;
+Console.WriteLine((x % 2 == 0) ? "páros" : "páratlan");
 
-// ha a while értéke true-->akkor a végtelenségik ismétlődik, 
-// false akkor egyáltalán nem fut le a benne megfogalmazott kódrész
-while (false)
-{
-	
-	Random random2 = new Random();
-	int gep = random2.Next(6) + 1;
-	Console.WriteLine("add meg a tipped(1-6 kozott)");
-	int tipp = Convert.ToInt32(Console.ReadLine());
-	if (gep == tipp) Console.WriteLine("Eltaláltad a gép tippjét");
-	else
-	{
-		Console.WriteLine("Nem találtad el a gép tippjét");
-		Console.WriteLine($"A gép amire gondolt: {gep}");
-	}
-	//Console.WriteLine("A program véget ért! Nyomj entert hogy törlődjön a képernyő tartalma");
-	//if(Console.ReadKey().Key==ConsoleKey.Enter) Console.Clear();
-}
-
-// 5 random [int] számot [50,100] egy paraméteres randommal
-// készítsünk és számoljuk ki
-// az összegüket, átlagukat, szorzatukat
+/*
+ Írjon egy programot, mely egy hármszög oldalainak hosszát [1,20] generálja le,
+jelenítsük meg a generált értékeket!És monduk meg h a hármoszög szerkeszthető-e! 
+(egy hármoszög szerkeszthtő, ha az (a+b>c) és (a+c>b) és (b+c>a) teljesül)
+ */
 
 Random random3 = new Random();
 
-int szam1 = random.Next(51) + 50;
-int szam2 = random.Next(51) + 50;
-int szam3 = random.Next(51) + 50;
-int szam4 = random.Next(51) + 50;
-int szam5 = random.Next(51) + 50;
+int a = random3.Next(20) + 1;
+int b = random3.Next(20) + 1;
+int c = random3.Next(20) + 1;
 
-int osszead = szam1 + szam2 + szam3 + szam4 + szam5;
-Console.WriteLine($"összeg:{osszead} ");
-Console.WriteLine($"átlag:{osszead/5.0} ");
+Console.WriteLine(a);
+Console.WriteLine(b);
+Console.WriteLine(c);
 
-int szorz = szam1 * szam2 * szam3 * szam4 * szam5;
+if ((a + b > c) &&(a + c > b) &&(b + c > a)) Console.WriteLine("szerkesztheto a haromszog");
+else Console.WriteLine("nem szerkesztheto a haromszog");
 
-Console.WriteLine($"szorzat:{szorz}");
-
+Console.WriteLine((a + b > c) && (a + c > b) && (b + c > a)? "szerkesztheto a haromszog": "nem szerkesztheto a haromszog");
 
 /*
- készítsünk egy kő, papír, olló játékot!
-A gép (1-3) (egy paraméteres random) generál számot,
-1-->kő
-2-->papír
-3-->olló
-Kérjen be a felh-tól egy számot és 
-logikailag rakja össze "if-else"-el a működést
-irassa ki hogy ki mit választott
+ generáljunk egy random értéket -50, 100 között, 
+és döntse el a program
+hogy a generált szám az -30 és 40 között van-e 
  */
 
-// egy lehetséges megoldás:
-Random random10 = new Random();
-int gepSzam = random10.Next(3) + 1;
-Console.WriteLine("Adj egy számot (1-3)[kő, papír, olló]");
-int felhSzam = Convert.ToInt32(Console.ReadLine());
-// kiíratom a gép mire gondolt
-Console.Write("Gép: ");
-switch (gepSzam)
-{
-	case 1: Console.WriteLine("KŐ"); break;
-	case 2: Console.WriteLine("Papír"); break;
-	case 3: Console.WriteLine("Olló"); break;
-}
-// kiíratom, hogy a felh. mire gondolt
-Console.Write("Felh: ");
-switch (felhSzam)
-{
-	case 1: Console.WriteLine("KŐ"); break;
-	case 2: Console.WriteLine("Papír"); break;
-	case 3: Console.WriteLine("Olló"); break;
-}
+Random random4 = new Random();
+int n = random4.Next(151)-50 ;
 
-if (gepSzam == felhSzam) Console.WriteLine("Döntetlen");
-else if (gepSzam == 1 && felhSzam == 3
-	|| gepSzam == 2 && felhSzam == 1
-	|| gepSzam == 3 && felhSzam == 2
-	) Console.WriteLine("gép győzött");
-else Console.WriteLine("én nyertem");
+if (n > -30 && n < 40) Console.WriteLine("A generált szám a két szám között van");
+else Console.WriteLine("A generált szám nem az intervallumban van");
 
 
+Console.WriteLine((n > -30 && n < 40)? "A generált szám a két szám között van": "A generált szám nem az intervallumban van");
 
-//Hármas operátor------------------------------------------------------
+int num1 = 12;
+int num2 = 10;
 
-// if else átalakítása hármas operátorú kifejezéssé
-if (3 > 2) Console.WriteLine("nagyobb");
-else Console.WriteLine("kissebb");
-
-// hármas operátor )
-Console.WriteLine((3 > 2)? "nagyobb": "kissebb");
-
-
-// típusok----------------------------------------------
-Console.WriteLine('6'.GetType());
-Console.WriteLine("6".GetType());
-Console.WriteLine(6.GetType());
-Console.WriteLine(6.0.GetType());
-Console.WriteLine(true.GetType());
+//-----------------------------------------------------------------
+//értékcsere
+int temp = num1;
+num1 = num2;
+num2 = temp;
 ```
