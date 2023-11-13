@@ -1,113 +1,160 @@
 ```c#
-//random
-Random random = new Random();
-int sz1 = random.Next(10); // [0,9]
-int sz2 = random.Next(9) + 1; // [1,9]
-//  [2,10]
-int sz3 = random.Next(9) + 2;
-// [5,10]
-int sz4 = random.Next(6)+5;
-// [-3,3]
-int sz5 = random.Next(7) - 3;
-// [-10,2]
-int sz6 = random.Next(13)-10;
-// [-20, -10]
-int sz7 = random.Next(11) - 20;
-// [-30,-15]
-int sz8 = random.Next(16) - 30;
+/* DOLGOZATBAN:
+- összetett logikai kifejezések
+- if else struktúrát átalakítani switch, már ha lehetséges, ha nem akkor mondd meg miért nem
+- egyparaméteres random számok generálása, és azokkal való műveletek
+- 3 vagy több elem növekvő/csökkenő sorrendbe való cserélgetése
+- while/do while ciklus
+ */
 
-// generáljunk 3 random számot [-100, 50], írjuk ki az eredményüket
-Random random1 = new Random();
-int sz9 = random1.Next(151)-100;
-int sz10 = random1.Next(151) - 100;
-int sz11 = random1.Next(151) - 100;
-Console.WriteLine($"{sz9} {sz10} {sz11}");
+// sorba rendezgetés-------------------------------------------------------
+// (növekvő sorrendbe)
+int szam1 = 7;
+int szam2 = 6;
+int szam3 = 5;
 
-// hány páros szám van
-int paros = 0;
-if(sz9 % 2 == 0) paros = paros + 1;
-if (sz10 % 2 == 0) paros = paros + 1;
-if (sz11 % 2 == 0) paros = paros + 1;
-Console.WriteLine($"páros: {paros}");
 
-//páratlanokat számolja:
-//Console.WriteLine(((sz9%2)<0?(sz9%2)*-1:(sz9%2))+((sz10%2)<0?(sz10%2)*-1:(sz10%2))+((sz11%2)<0?(sz11%2)*-1:(sz11%2)));
-
-// hány darab páratlan szám van
-int paratlan = 0;
-if (sz9  %  2  != 0 ) paratlan = paratlan + 1;
-if (sz10 %  2 != 0)  paratlan = paratlan + 1;
-if (sz11 %  2 != 0) paratlan = paratlan + 1;
-Console.WriteLine($"paratlan:: {paratlan}");
-
-// mennyi a pozitív és a negatív
-int pozitiv = 0;
-int negativ = 0;
-if (sz9 < 0) negativ = negativ + 1;
-else pozitiv = pozitiv + 1;
-if (sz10 < 0) negativ = negativ + 1;
-else pozitiv = pozitiv + 1;
-if (sz11 < 0) negativ = negativ + 1;
-else pozitiv = pozitiv + 1;
-Console.WriteLine($"negatív: {negativ} pozitív: {pozitiv}");
-
-// mennyi a számok átlaga
-double atlag = Convert.ToDouble(sz9 + sz10 + sz11) / 3.0;
-Console.WriteLine($"Átlag: {Math.Round(atlag,3)}");
-
-//sz10 értékét cseréld meg sz11-el
-Console.WriteLine($"{sz10} {sz11}");
-int temp = sz10;
-sz10 = sz11;
-sz11 = temp;
-Console.WriteLine($"{sz10} {sz11}");
-
-// növekvő sorrendbe a 3 változót cserélgetsd át
-Console.WriteLine($"{sz9} {sz10} {sz11}");
-
-if (sz9 > sz10)
+Console.WriteLine($"{szam1} {szam2} {szam3}");
+if (szam1 > szam2)
 {
-	int temp2 = sz9;
-	sz9 = sz10;
-	sz10 = temp2;
+	int temp = szam2;
+	szam2 = szam1;
+	szam1 = temp;
 }
-if (sz9 > sz11)
+if (szam1 > szam3)
 {
-	int temp2 = sz9;
-	sz9 = sz11;
-	sz11 = temp2;
+	int temp = szam3;
+	szam3 = szam1;
+	szam1 = temp;
 }
-if (sz10 > sz11)
+if (szam2 > szam3)
 {
-	int temp2 = sz10;
-	sz10 = sz11;
-	sz11 = temp2;
+	int temp = szam3;
+	szam3 = szam2;
+	szam2 = temp;
 }
-Console.WriteLine($"A számok sorrendbe: {sz9} {sz10} {sz11}");
+Console.WriteLine($"{szam1} {szam2} {szam3}"); // növekvő sorrenben jelenít meg
+Console.WriteLine($"a legkisebb négyzetgyöke: {Math.Round(Math.Sqrt(szam1), 3)}");
 
-
-
-// while,
-// ??? elöl tesztelős ciklus
-// csak akkor fog lefutni, ha a feltététel igaz, és addig futni AMÍG a felétel igaz
-int szam = 6;
-if (szam < 20)
+// while-----------------------------------------
+// 10-1 ig csökkenő sorrendbe számok
+int valtozo = 10;
+while (valtozo > 0)
 {
-	Console.WriteLine("lefutott a kód");
+	Console.WriteLine(valtozo);
+	valtozo--;
 }
 
-while (szam < 20)
+// 1-20ig a páratlan számokat
+int x = 1;
+while (x < 21)
 {
-	Console.WriteLine("lefutott a kód");
+	if (x % 2 != 0)
+	{
+		Console.WriteLine(x);
+	}
+
+	x++;
 }
 
-// hátul tesztelős ciklus
-// 1x mindenképpen lefut! Amikor lefutott 1x akkor nézi meg a feltételt hogy mi is az
+// 1-20ig az összes 5el osztható számot
+int y = 1;
+while (y < 21)
+{
+	if (y % 5 == 0)
+	{
+		Console.WriteLine(y);
+	}
+	y++;
+}
 
+// 1-20 az összes párost, és azok négyzetgyökét,
+// 2 tizedesre kerekítve
+// pl.: 2-->1.41, 4-->2
+
+int z = 1;
+while (z < 21)
+{
+	if (z % 2 == 0)
+	{
+		Console.WriteLine($"{z}-->{Math.Sqrt(z):0.00}");
+	}
+	z++;
+}
+
+// (5ért: Írja ki az első N prímszámot, N-->felhasználótol kérje be)
+
+// kérjen be a felh-számokat, és adogassa össze mindaddig, 
+// míg 0-t nem adunk értékül
+
+int bekertSzam = 0;
+int osszeg = 0;
 do
 {
-	Console.WriteLine("lefutott a kód");
-} while (szam<5);
+	Console.WriteLine("Adjom meg számot:");
+	bekertSzam = Convert.ToInt32(Console.ReadLine());
+	osszeg = bekertSzam + osszeg;
+} while (bekertSzam != 0);
 
 Console.ReadKey();
+
+// if-else ---> switch ------------------------------------------------------
+//átalakítható vagy nem switch-é???
+int a = 7;
+int b = 8;
+int c = 10;
+if (a == 7)
+{
+	Console.WriteLine("a és b egyenlő");
+}
+else if (a == 10)
+{
+	Console.WriteLine("a és c egyenlő");
+}else
+{
+	Console.WriteLine("a nem egyenlő b-vel sem és c-vel sem");
+}
+// igen átalakítható úgy, hogy a funkcionalitása megegyezik teljes mértékben
+// ugyanis az 'a' változót '=='-el összehasonlítjuk egy konstanssal pl 7, vagy 10
+// továbbá lácolt alakban van az if, azaz if--> else if-->else
+switch (a)
+{
+	case 7: Console.WriteLine("a és b egyenlő"); break;
+	case 10: Console.WriteLine("a és c egyenlő"); break;
+	default: Console.WriteLine("a nem egyenlő b-vel sem és c-vel sem"); break;
+}
+
+// kövi
+int vegosszeg = 10_000;
+string kedvezmeny = "10%";
+if (kedvezmeny == "10%")
+{
+	Console.WriteLine($"a kedvezményes végösszeg: {vegosszeg*0.9}");
+}else if (kedvezmeny == "30%")
+{
+	Console.WriteLine($"a kedvezményes végösszeg: {vegosszeg * 0.7}");
+}
+else
+{
+	Console.WriteLine("Nállunk nincsen ilyen kedvezmény!");
+}
+
+// igen átalakítható úgy, hogy a funkcionalitása megegyezik teljes mértékben
+// ugyanis a 'kedvezmeny' változót '=='-el összehasonlítjuk különböző szöveges konstanssal pl "10%", vagy "30%"
+// továbbá lácolt alakban van az if, azaz if--> else if-->else, ami megfeleltethető
+// case, case, default formában switch esetében:
+
+switch (kedvezmeny)
+{
+	case "10%":
+		Console.WriteLine($"a kedvezményes végösszeg: {vegosszeg * 0.9}");
+		break;
+	case "30%":
+		Console.WriteLine($"a kedvezményes végösszeg: {vegosszeg * 0.7}");
+		break;
+	default: Console.WriteLine("Nállunk nincsen ilyen kedvezmény!");
+		break;
+}
+
+// kövi órán nézünk példát arra, hogy melyik if szerkezet nem alakítható át switch-re és miért
 ```
