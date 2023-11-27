@@ -1,135 +1,65 @@
 ```c#
-// if szerkezet átalakítása switch--ééé
-
-// az alakítható át, ami "if, else if, else" vagy "if, else" láncolatot követ
-// ELSE legyen benne
-// egy adott értéket hasonlít össze több konstanssal és nem pedig változóval
-// logikai operátora szigorúan ==
-// if, else if--> case
-// else --> default
-
-int vegosszeg = 10_000;
-string kedvezmeny = "10%";
-string kedv = "10%";
-if (kedvezmeny== kedv)
-{
-	Console.WriteLine($"{vegosszeg*0.9}");
-}
-else if(kedvezmeny=="50%")
-{
-	Console.WriteLine($"{vegosszeg*0.5}");
-}else
-{
-	Console.WriteLine("Nincs ilyen kedvezmeny");
-}
-
-switch (kedvezmeny)
-{
-	case "10%":
-		Console.WriteLine($"{vegosszeg * 0.9}");
-		break;
-	case "50%":
-		Console.WriteLine($"{vegosszeg * 0.5}");
-		break;
-	default:
-		Console.WriteLine("Nincs ilyen kedvezmeny");
-		break;
-}
-
-// ez átalakítható??
-
-int ora = 12;
-int perc = 30;
-if(ora==10 && perc == 30)
-{
-	Console.WriteLine("Még van 2 órám kezdésig");
-}
-else if (ora == 12)
-{
-	Console.WriteLine("Még van fél órám a kezdésig");
-}
-else {
-	Console.WriteLine("Elkéstem");
-}
-
-// ez nem alakítható át switch, mert az első if feltételben 2 változót vizsgálok
-
-
-// ez átalakítható??
-
-int erdemjegy = 5;
-if (erdemjegy == 5)
-{
-	Console.WriteLine("jeles");
-}
-if (erdemjegy == 4)
-{
-	Console.WriteLine("Jó");
-}
-if (erdemjegy == 2)
-{
-	Console.WriteLine("elégséges");
-}
-
-// ez  nem átalakítható teljes funcionalitással, mert ha az első feltétel igaz
-// nem hagyja abba a többinek a vizsgálatát
-
-// Random intervallum képzése----------------------------------
+// while ciklusos feladat
 Random random = new Random();
-int sz = random.Next(10); // [0,9]
-// [2,15]
-int sz1 = random.Next(14)+2;
-// [10,30]
-int sz2 = random.Next(21) + 10;
-// [-10, 10]
-int sz3 = random.Next(21)-10;
-// [-20,20]
-int sz4 = random.Next(41)-20;
-// [-20,-10]
-int sz5 = random.Next(11) - 20;
-// [-100,-50]
-int sz6 = random.Next(51)-100;
+int x = random.Next(100)+1;
+int y = 0;
+int szamlalo = 0;
+while (x != y)
+{
+	Console.WriteLine("Adjom meg egy tippet");
+	y = Convert.ToInt32(Console.ReadLine());
+	if(y>x) Console.WriteLine("A számod nagyobb mint amire gondoltam");
+	else if(y<x) Console.WriteLine("A számod kisebb amire gondoltam");
+	szamlalo += 1;
+}
+Console.WriteLine("A számot eltaláltad");
+Console.WriteLine($"{szamlalo}");
 
 
-// Sorba cserélgetés -->csökkenő
-// Rabdom kell generálni 3 [-30,50], 
+// előírt lépésszámú ciklus --> for
+for (int i = 1; i <= 10; i++)
+{
+	Console.WriteLine($"*, lépés szám: {i}");
+} 
 
-Random random1 = new Random();
-int szam1 = random.Next(81)-30;
-int szam2 = random.Next(81)-30;
-int szam3 = random.Next(81)-30;
-Console.WriteLine($"{szam1} {szam2} {szam3}");
-if (szam1 < szam2)
+//véletlenszerűen 5 egész számot [0,50]
+// írjuk ki egymás mellé szóközzel elválasztva
+
+Random random2 = new Random();
+
+for (int i = 1; i <= 5; i++)
 {
-	int temp = szam2;
-	szam2 = szam1;
-	szam1 = temp;
-}
-if (szam1 < szam3)
-{
-	int temp = szam3;
-	szam3 = szam1;
-	szam1 = temp;
-}
-if (szam2 < szam3)
-{
-	int temp = szam3;
-	szam3 = szam2;
-	szam2 = temp;
-}
-Console.WriteLine($"{szam1} {szam2} {szam3}");
-int kulonbseguk = szam1 - szam3;
-Console.WriteLine($"{kulonbseguk}");
-int absFgg = Math.Abs(kulonbseguk);
-if (kulonbseguk < 0)
-{
-	int abs = kulonbseguk * -1;
-	Console.WriteLine($"ennek az abs: {abs}");
-}
-else
-{
-	Console.WriteLine($"ennek az abs: {kulonbseguk}");
+	int sz = random2.Next(51);
+	Console.Write($"{sz} ");
 }
 
 
+// 40 random [-100, 100] számot generáljunk
+// for ciklussal, egymás mellé írassuk ki
+// egy sorban 8 érték lehet (x%8==0)
+
+Random random3 = new Random();
+
+for (int i = 1; i <= 40; i++)
+{
+	int sz2 = random3.Next(-100,101);
+	Console.Write($"{sz2} ");
+	if (i % 8 == 0) Console.WriteLine();
+}
+
+// Oktatóprogram!
+// 10 feladatot adj a felhasználónak
+// minden páros összeadásos feladat
+// minden páratlan kivonásos feladat
+// minden egyes felathoz képezz 2 random számot
+// [-5,15]-ban
+// pl: -5+3=?
+// minden egyes megoldás 1-1 pont
+// összesen 10 pont szerezhető
+// osztályozzuk a tanulót a végén
+// 0-2ig elégtelen
+// 3-4ig elégséges
+// 5-6ig közepes
+// 7-8ig jó
+// 9-10ig jeles
 ```
