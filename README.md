@@ -1,142 +1,191 @@
 ```c#
-// printeljük ki, mit látunk?
-int sz1 = 65;
-int sz2 = 76;
-int sz3 = 77;
-int sz4 = 65;
-Console.WriteLine($"{sz1} {sz2} {sz3} {sz4}");
-
-// és most?
-Console.WriteLine($"{(char)sz1} {(char)sz2} {(char)sz3} {(char)sz4}");
-
-// az 'A' kódbeli értéke (ASCII kódtáblabeli azonosítója-->dec)
-char karakter = 'A';
-Console.WriteLine((int)karakter); // 65
-// az 'a' kódbeli értéke (ASCII kódtáblabeli azonosítója-->dec)
-Console.WriteLine((int)'a'); // 97
-// az 'B' kódbeli értéke (ASCII kódtáblabeli azonosítója-->dec)
-Console.WriteLine((int)'B'); // 66
-// az 'b' kódbeli értéke (ASCII kódtáblabeli azonosítója-->dec)
-Console.WriteLine((int)'b'); // 98
-
-// x, y, z alakítsuk nagybetűssé
-Console.WriteLine($"(x, y, z)=>({(char)('x'-32)}, {(char)('y'-32)}, {(char)('z'-32)})");
-
-// nem mindegy a konstanst hogyan írjuk, meglehet nézni, hogy mi van akkor ha a szám körül
-// "" van vagy '' vagy pedig nincs semmi vagy pedig a szám után egy .0 van, ezek mind mást típust eredményeznek
-Console.WriteLine(6.GetType()); // int
-Console.WriteLine(6.0.GetType()); // double
-Console.WriteLine('6'.GetType()); // char
-Console.WriteLine("6".GetType()); // string
-
-// A nagybetűs angolszász abc kiíratása (NAGYBETŰS)
-for (int i = 65; i <= 90; i++)
+static void Main(string[] args)
 {
-	Console.Write($"{(char)i} ");
-}
-Console.WriteLine(); // erre azért van szüksége mert igy végül a kiíratott szöveg után tesz egy sortörést
+	// karakterek/ASCI
+	//---------------------------------------------------------
+	// hogyan nyerem ki egy karakter ASCII kódját?
+	char karakter = 'b';
+	Console.WriteLine(karakter); // b
+	Console.WriteLine((int)karakter); // 98 <-- így
+	// hogyan kényszeríthetem ki, hogy egy szám karakterként jelenjen meg?
+	int szam = 67;
+	Console.WriteLine(szam); // 67
+	Console.WriteLine((char)szam); // A <-- így
 
+	// string, mint tömb
+	//---------------------------------------------------------
 
-// string, mint tömb----------------------------------------------------
-string szoveg = "alma";
-Console.WriteLine(szoveg[0]); //'a'
-Console.WriteLine(szoveg.Length); //4
-//Console.WriteLine(szoveg[4]); //-->error, túl hivatkozunk!
-Console.WriteLine((int)szoveg[szoveg.Length-1]); //97
+	// egy szöveg tulajdonságai
+	string alma = "alma";
+	// első karakter lehivatkozása
+	Console.WriteLine(alma[0]);
+	// utolsó karakter lehivatkozása
+	Console.WriteLine(alma[alma.Length-1]); 
 
-// kisbetűs-->nagybetűs
-string beka = "beka";
-for (int i = 0; i < beka.Length; i++)
-{
-	Console.Write((char)(beka[i]-32));
-}
-Console.WriteLine(); // erre azért van szüksége mert igy végül a kiíratott szöveg után tesz egy sortörést
-
-// minden második karaktert írassunk ki
-for (int i = 0; i < beka.Length; i+=2)
-{
-	Console.Write(beka[i]);
-}
-Console.WriteLine(); // erre azért van szüksége mert igy végül a kiíratott szöveg után tesz egy sortörést
-
-
-// írjuk ki az 5. elemtől a beka szót, (persze hosszú szónak kell lennie)
-for (int i = 5; i < beka.Length; i++)
-{
-	Console.Write(beka[i]);
-}
-Console.WriteLine(); // erre azért van szüksége mert igy végül a kiíratott szöveg után tesz egy sortörést
-
-
-// forditott sorrend
-Console.Write("szoveg: ");
-string szov = Console.ReadLine();
-for (int i = szov.Length-1; i >= 0; i--)
-{
-	Console.Write(szov[i]);
-}
-Console.WriteLine(); // erre azért van szüksége mert igy végül a kiíratott szöveg után tesz egy sortörést
-
-// nézzük meg, hogy a bekért szöveg tartalmaz-e t betűt, ha igen mondjuk meg h mennyit
-int szamlalo = 0;
-for (int i = 0; i < szov.Length; i++)
-{
-	if (szov[i] == 't')
+	// döntsük el, hogy van-e az alma változóban 'l' betű
+	int szamlalo = 0;
+	for (int i = 0; i < alma.Length; i++)
 	{
-		//szamlalo= szamlalo+1;
-		//szamlalo+= 1;
-		szamlalo++;
+		if (alma[i] == 'l')
+		{
+			szamlalo++;
+		}
 	}
-}
-Console.WriteLine($"Ennyi db t betű van a(z) {szov} szövegben: {szamlalo}");
-
-// számoljuk meg, hogy a bekért szövegben mennyi magánhangzó van
-int maganhangzo = 0;
-for (int i = 0; i < szov.Length; i++)
-{
-	if(
-		szov[i]=='a' || 
-		szov[i]=='e' ||
-		szov[i]=='i' ||
-		szov[i]=='u' ||
-		szov[i]=='o'
-		)
+	if (szamlalo > 0)
 	{
-		// maganhangzo
-		maganhangzo++;
-	}
-}
-Console.WriteLine($"{maganhangzo} db maganhanzo van a(z) {szov} szoban");
-
-// Az összes magánhangzót cseréljük i betűre
-// pl kerekpar-->kirikpir
-for (int i = 0; i < szov.Length; i++)
-{
-	if (
-		szov[i] == 'a' ||
-		szov[i] == 'e' ||
-		szov[i] == 'u' ||
-		szov[i] == 'o'
-		)
-	{
-		// maganhangzo
-		Console.Write("i");
+		Console.WriteLine($"van benne! {szamlalo}db");
 	}
 	else
 	{
-		Console.Write(szov[i]);
+		Console.WriteLine("nincs benne");
 	}
-}
-Console.WriteLine();
 
-// alakítsd át a neved nagybetűssé
-string keresztnev = "benjamin";
-for (int i = 0; i < keresztnev.Length; i = i + 1)
+	// a varazsige változót szövegét (értékét) írassa ki fordítva.
+	string varazsige = "abrakadabra";
+	for (int i = varazsige.Length-1; i>=0; i--)
+	{
+		Console.Write(varazsige[i]);
+	}
+	Console.WriteLine();
+
+	// képezzünk monogrammot
+	string nev = "kis pista"; 
+	Console.Write($"{(char)(nev[0]-32)}.");
+	for (int i = 0; i < nev.Length; i++)
+	{
+	   
+		if (nev[i]==' ')
+		{
+			Console.Write($"{(char)(nev[i+1]-32)}.");
+		}
+	}
+	Console.WriteLine();
+
+	// minden második karakter nagybetűs
+	string sz1 = "szalmazsák";
+	for (int i = 0; i < sz1.Length; i++)
+	{
+		if (i%2==0)
+		{
+			Console.Write(sz1[i]);
+		}
+		else
+		{
+			Console.Write((char)(sz1[i]-32));
+		}
+	}
+	Console.WriteLine();
+
+	// minden karakterét számként jelenítsd meg
+	// egymás után szóközzel elválasztva
+	string sz2 = "almazsák";
+	for (int i = 0; i < sz2.Length; i++)
+	{
+		Console.Write($"{(int)sz2[i]} ");
+	}
+	Console.WriteLine();
+
+
+	// -(kötőjel) --> : (kettőspont)
+	string mac = "6C-6A-77-C8-E4";
+	for (int i = 0; i < mac.Length; i++)
+	{
+		if (mac[i] == '-')
+		{
+			Console.Write(":");
+		}
+		else Console.Write(mac[i]);
+	}
+	Console.WriteLine();
+
+
+	// minden szóköz mentén törjünk sort:
+	// pl John Doe-->
+	// John
+	// Doe
+	string sz3 = "John Doe";
+	for (int i = 0; i < sz3.Length; i++)
+	{
+		if(sz3[i]==' ')
+		{
+			Console.WriteLine();
+		}
+		else Console.Write(sz3[i]);
+	}
+	Console.WriteLine();
+
+	// ugyan ez csak fordítva írassuk közben ki
+	// pl : John Doe-->
+	// eoD
+	// nohJ
+	string sz4 = "John Doe";
+	for (int i = sz4.Length-1; i >= 0; i--)
+	{
+		if (sz4[i] == ' ')
+		{
+			Console.WriteLine();
+		}
+		else Console.Write(sz4[i]);
+
+	}
+	Console.WriteLine();
+
+
+	// legyen adott egy mondat és íratsd ki a
+	// második szót!
+	string sz5 = "szeretem az erdőt";
+	int szokozszam = 0;
+	for (int i = 0; i < sz5.Length; i++)
+	{
+		if (sz5[i] == ' ')
+		{
+			szokozszam++;
+		}
+
+		if (szokozszam==1 && sz5[i]!=' ')
+		{
+			Console.Write(sz5[i]);
+		}
+	}
+	Console.WriteLine();
+
+	// TIKOSÍTÁS VISSZAFEJTÉS
+	//---------------------------------------------------------
+	string eredetiUzenet = "BANÁN";
+	// meghívtuk a Titkosítás függvényt, ami kettő paramétert vár
+	string titkositottUzenet= Titkositas(eredetiUzenet, 25);
+	// meghívtuk a Visszafejtes függvényt, ami kettő paramétert vár
+	string visszafejtettUzenet = Visszafejtes(titkositottUzenet, 25);
+	Console.WriteLine(eredetiUzenet); // BANÁN
+	Console.WriteLine(titkositottUzenet); // kricc kracc szöveg
+	Console.WriteLine(visszafejtettUzenet); // BANÁN
+
+	Console.ReadKey();
+}
+
+// függvény, feladatköre hogy eltolja a paraméterül kapott szöveg minden 
+// karakterét az eltolas valtozó értékével, amit szintén paraméterként kaptunk meg
+// a függvény visszatérési értéke string, azaz szöveg, a függvényblokkba ilyenkor 
+// kötelező egy return kulcsszó, ezután csak olyan érték lehet ami azonos stringgel
+// hiszen a private static után string áll!
+private static string Visszafejtes(string titkositottUzenet, int eltolas)
 {
-	Console.Write((char)(keresztnev[i] - 32)); // -32-el eltolva nagybetűset kapunk
+	string visszafejtett = "";
+	for (int i = 0; i < titkositottUzenet.Length; i++)
+	{
+		visszafejtett += (char)(titkositottUzenet[i] - eltolas);
+	}
+	return visszafejtett;
 }
-Console.WriteLine(); // erre azért van szüksége mert igy végül a kiíratott név után tesz egy sortörést
 
-
-Console.ReadKey();
+// visszafejésért felel
+private static string Titkositas(string uzenet, int eltolas)
+{
+	string titkositottUzenet = "";
+	for (int i = 0; i < uzenet.Length; i++)
+	{
+		titkositottUzenet += (char)(uzenet[i] + eltolas);
+	}
+	return titkositottUzenet;
+}
 ```
