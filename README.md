@@ -1,117 +1,147 @@
 ```c#
 static void Main(string[] args)
 {
-	feladat1();
-	feladat2();
-	feladat3();
+	bevezeto();
+	//programozozási tételek:
+	//gyakran használatos algoritmusok a programozásban, tömbökre épül
+
+	osszegzesTetele();
+	osszegzesTetele1Feladat();
+	osszegzesTetele2Feladat();
+
+	megszamolasTetele();
+	megszamolasTetele1Feladat();
+
 	Console.ReadKey();
 }
 
-private static void feladat3()
+private static void megszamolasTetele1Feladat()
 {
-	// hozzon létre egy 10 elemű tömb [1,20]-ban töltse fel az elemeit
-	// szervezze ki egy külön tömbbe az eredeti tömb 10nél kisebb elemeit
+	// 12 egész szám [-50, 50]-ban feltöltve. Mennyi pozitív mennyi negatív van
 	Random r = new Random();
-	int[] tomb = new int[10];
-	int hossz = 0; // ezzel megszámoljuk hogy mennyi elemre teljesül az hogy 10 alatti szám
+	int[] tomb = new int[12];
+	int poz = 0;
 	for (int i = 0; i < tomb.Length; i++)
 	{
-		// feltöltjük a tömb i. elemét
-		tomb[i] = r.Next(20)+1;
-		// ezzel megszámoljuk hogy mennyi elemre teljesül az hogy 10 alatti szám
-		if (tomb[i] < 10) hossz++;
+		tomb[i] = r.Next(101) - 50;
+		if (tomb[i] >= 0) poz++;
 	}
-	// ha van elegalább egy eleme a tömbnek ami 10nél kisebb szám
-	// akkor beletöltjük egy új tömbbe ezt/ezeket az értékeket
-	if (hossz != 0)
-	{
-		int index = 0; // arra kell hogy a tizAlatt tömb elemeit fel tudjuk tölteni
-		int[] tizAlatt = new int[hossz]; // létre hozzuk az új tömböt
-		// körbenézzük az eredeti tömböt, ha találunk egy olyan értéket ami 10 alatti
-		// akkor azt bele töltjük az új tömbbe
-		for (int i = 0; i < tomb.Length; i++)
-		{
-			if(tomb[i] < 10)
-			{
-				tizAlatt[index]= tomb[i]; // bele töltjük az új tömbbe
-				// majd egyel növeljük az indexet hogy az új tömb következő elemét tudjuk lehivatkozni
-				// a következő lépésben:
-				index++; 
-			}
-		}
-		// írassuk ki qa tizAlatt tömb elemeit
-		for (int i = 0; i < tizAlatt.Length; i++)
-		{
-			Console.Write($"{tizAlatt[i]} ");
-		}
-	}
-	// ha nincs 10nél kisebb eleme:
-	else Console.WriteLine("nincs 10 alatti eleme");
+	Console.WriteLine($"pozitív: {poz}");
+	Console.WriteLine($"negatív: {tomb.Length-poz}");
 }
 
-private static void feladat2()
+private static void megszamolasTetele()
 {
-	// készítsünk egy string tömböt, 3 eleműt. Nevezzük el szekrénynek
-	// Kérjünk be a konzolról ruhaneműket és töltsük fel velük ezt a tömböt
-	string[] szekreny = new string[3];
-	for (int i = 0; i < szekreny.Length; i++)
-	{
-		szekreny[i] = Console.ReadLine();
-	}
-	// majd írassuk ki a szekrény tartamát
-	Console.Write("A szekrény tartalma \n");
-	for (int i = 0; i < szekreny.Length; i++)
-	{
-		Console.WriteLine($"-{szekreny[i]}");
-	}
-}
+	// mennyi olyan eleme van a tömbnek amely egy adott feltételnek megfelel
+	// összeg=összeg+1
+	// összeg+=1
+	// összeg++
 
-private static void feladat1()
-{
-	int z = 6;
-	int y = 6;
-	// 1 dim tömb/vektor
-	// előnye hogy nem kell ezer+1 változót létre hoznom,
-	// a tömbbe eltárolhatunk egyszerre több azonos típusú értéket
-	// mely értékek a memóriában egymás mellett foglalnak le területet
+	// nézzük meg h mennyi 'e' betű van a következő karakter tömbben
+	char[] karakterTomb = new char[3];
+	karakterTomb[0] = 'e';
+	karakterTomb[1] = 'z';
+	karakterTomb[2] = 'e';
 
-	// három elemű karakter típusú tömb
-	// ha primitív típusokból (int, double, char, bool) készítünk tömböt
-	// alapból nullával tölti fel kezőértékként, bizonyítsuk:
-	char[] tomb = new char[3];
-	for (int i = 0; i < tomb.Length; i++)
+	int osszeg = 0;
+	for (int i = 0; i < karakterTomb.Length; i++)
 	{
-		// ha nem lenne ott az int cast akkor 3 semmit írna ki a konzolra
-		// ugyanis a nulla ASCII kódnak nincs megjeleníthető karakterértéke
-		Console.WriteLine((int)tomb[i]);
+		if (karakterTomb[i] == 'e') osszeg++;
 	}
-	
-	// 2 dim tömb/ mátrix-----------------------------------------------------
-	int[,] matrix = new int[2, 3]; // sor, oszlop
-	// int[2,3]: sor, oszlop
-	// vagy úgy is felfoghatjuk hogy az elsőben azt mondjuk meg, hogy mennyi 
-	// 1 dimenziós/vektorból épüljön fel
-	// a másodikkal azt határozzuk meg, hogy egy-egy 1dim tömbje/vektorja hány elemből álljon
-	for (int i = 0; i < matrix.GetLength(0); i++) // végig járjuk a vektorjait (2db)
+	Console.WriteLine($"ennnyi 'e' betű van benne: {osszeg}");
+
+	// ugyan ez string-ben
+	// (láthatjuk, hogy a string tényleg úgy viselkedik, mint egy tömb, pontosabban egy karakter tömb)
+	string szoveg = "eze";
+	int stringOsszeg = 0;
+	for (int i = 0; i < szoveg.Length; i++)
 	{
-		for (int j = 0; j < matrix.GetLength(1); j++) // végigjárjuk egy-egy vektorjának elemeit (3db)
-		{
-			Console.Write($"{matrix[i, j]}\t"); // az i. vektor j. eleme
-		}
-		Console.WriteLine(); // mátrixos nézethez kell, ha kirajzolt egy vektorjának elemit, törjön sort
+		if (szoveg[i] == 'e') stringOsszeg++;
+	}
+	Console.WriteLine($"A stringben {stringOsszeg} darab 'e' betű van.");
+
+	// hozzunk létre egy 5 elemű tömböt 
+	// kezdő értékkel töltsükü fel, számoljuk meg,
+	// hogy mennyi 0tól nagyobb értéke vanó
+	int[] szamok = new int[5];
+	int szamlalo = 0;
+	Random random = new Random();
+	for (int i = 0; i < szamok.Length; i++)
+	{
+		szamok[i] = random.Next(101)-50; // [-50, 50]
+		Console.Write($"{szamok[i],5}"); // ez a vessző 5, azt jelenti, hogy minden karakter 5 szóköznyi helyet foglal
+		if (szamok[i]>0) szamlalo++;
 	}
 	Console.WriteLine();
+	Console.WriteLine($"ennyi 0-tol nagyobb számod van: {szamlalo}");
+}
 
-	// mátrix feltöltése [5,9] random számokkal, plusz kiíratni
-	Random random = new Random();
-	for (int i = 0; i < matrix.GetLength(0); i++)
+private static void osszegzesTetele2Feladat()
+{
+	// 8 egész számú tömböt hozzunk létre [0,100] RANDOM
+	// majd az elemeit egy sorba írassuk ki,
+	// és vegye az átlagát a számokkal 3 tizedes pontosan
+	Random r = new Random();
+	int[] tomb = new int[8];
+	int osszeg = 0;
+	for (int i = 0; i < tomb.Length; i++)
 	{
-		for (int j = 0; j < matrix.GetLength(1); j++)
-		{
-			matrix[i, j] = random.Next(5) + 5; //[5,9]
-			Console.Write($"{matrix[i, j]} ");
-		}
-		Console.WriteLine();
+		tomb[i] = r.Next(101);
+		Console.Write($"{tomb[i],5}");
+		osszeg += tomb[i];
 	}
+	for (int i = 0; i < 2; i++) Console.WriteLine(); // 2 sortörés
+	Console.WriteLine($"átlag: {Math.Round(osszeg / (double)tomb.Length, 3)}");
+}
+
+private static void osszegzesTetele1Feladat()
+{
+	char[] tomb = new char[4];
+	tomb[0] = 'A';
+	tomb[1] = 'L';
+	tomb[2] = 'M';
+	tomb[3] = 'A';
+	// karaktertömb elemeinek az ASCII kódbeli összegét számolja ki
+	int osszeg = 0;
+	// karaktertömbből gyártsunk stringet gyártunk
+	string osszefuzes = "";
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		osszeg += tomb[i]; // ez számként kezeli a karaktert
+		osszefuzes += tomb[i]; // ez folyamatosan összefűzi stringbe a karaktert
+	}
+	Console.WriteLine(osszeg);
+	Console.WriteLine(osszefuzes);
+}
+
+private static void osszegzesTetele()
+{
+	// tömbök elmeinek az összegét adja vissza:
+	// összeg=összeg+aktuális elem
+	// összeg+=aktuális elem
+
+	int[] tomb = new int[3];
+	tomb[0] = 10;
+	tomb[1] = 5;
+	tomb[2] = 6;
+
+	int osszeg = 0;
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		osszeg = osszeg + tomb[i];
+		// osszeg += tomb[i];
+	}
+	Console.WriteLine($"összegük: {osszeg}"); //21
+}
+
+private static void bevezeto()
+{
+	// a tömböknek egyik nagy előnye hogy nem kell ezer meg egy 
+	// változót létrehozni a különböző értékeknek
+	// a tömbben egyszerre rengeteg értéket el tudok menteni
+	int sz1 = 6;
+	int sz2 = 7;
+	// három elemű int tömb, kezőértékei 3 nulla
+	int[] tomb = new int[3];
 }
 ```
