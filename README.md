@@ -1,147 +1,211 @@
 ```c#
 static void Main(string[] args)
 {
-	bevezeto();
-	//programozozási tételek:
-	//gyakran használatos algoritmusok a programozásban, tömbökre épül
-
+	// PROGRAMOZÁSI TÉTELEK / NEVEZETES ALGORITMUSOK
+	// alapvető algoritmusok amiket programozás során használunk
 	osszegzesTetele();
-	osszegzesTetele1Feladat();
-	osszegzesTetele2Feladat();
-
-	megszamolasTetele();
-	megszamolasTetele1Feladat();
-
-	Console.ReadKey();
+	megszamlalasTetele();
+	eldontesTetele();
+	osszetettFeladat1();
+	osszetettFeladat2();
 }
 
-private static void megszamolasTetele1Feladat()
+/// <summary>
+/// GYAKORLÓ
+/// "CASIC nevű kínai cég megdönti a vasútipar rekordjait. Készül az 1000 km/h-s vonat."
+/// - van-e benne nagybetű
+/// - van-e benne kisbetű
+/// - van-e benne szám
+/// - mennyi betűből áll
+/// - mennyi szám van benne
+/// - mennyi kisbetű van benne
+/// </summary>
+private static void osszetettFeladat2()
 {
-	// 12 egész szám [-50, 50]-ban feltöltve. Mennyi pozitív mennyi negatív van
+	string szoveg = "CASIC nevű kínai cég megdönti a vasútipar rekordjait. Készül az 1000 km/h-s vonat.";
+	task1(szoveg);
+}
+
+/// <summary>
+/// van-e benne nagybetű
+/// </summary>
+private static void task1(string szoveg)
+{
+	// ELDÖNTÉS
+	bool vanE = false;
+	int i = 0;
+	while (vanE==false && i<szoveg.Length)
+	{
+		if(szoveg[i]>='A' && szoveg[i] <= 'Z')
+		{
+			vanE = true;
+		}
+		i++;
+	}
+}
+
+/// <summary>
+/// iskolai verseny. 2 10 főscsoport van. minden tanuló [0,10] közötti
+/// pontot szerzett. Írassa ki külön-külön sorba a csoportok eredményeit
+/// - mennyi tanuló szerzett az első csoportból 0 pontot [megszámlálás tétele]
+/// - volt-e a második csoportban 10 pontot szerző tanuló [eldöntés tétele]
+/// - melyik csoport mennyi pontot szerzett összesen [összegzés tétele]
+/// </summary>
+private static void osszetettFeladat1()
+{
 	Random r = new Random();
-	int[] tomb = new int[12];
-	int poz = 0;
-	for (int i = 0; i < tomb.Length; i++)
-	{
-		tomb[i] = r.Next(101) - 50;
-		if (tomb[i] >= 0) poz++;
-	}
-	Console.WriteLine($"pozitív: {poz}");
-	Console.WriteLine($"negatív: {tomb.Length-poz}");
+	int[] elsoCsop = feltolt(10, r);
+	int[] masodikCsop = feltolt(10, r);
+	feladat1(elsoCsop);
+	feladat2(masodikCsop);
+	feladat3(elsoCsop, masodikCsop);
 }
 
-private static void megszamolasTetele()
+/// <summary>
+/// melyik csoport mennyi pontot szerzett összesen [összegzés tétele]
+/// </summary>
+private static void feladat3(int[] elsoCsop, int[] masodikCsop)
 {
-	// mennyi olyan eleme van a tömbnek amely egy adott feltételnek megfelel
-	// összeg=összeg+1
-	// összeg+=1
-	// összeg++
-
-	// nézzük meg h mennyi 'e' betű van a következő karakter tömbben
-	char[] karakterTomb = new char[3];
-	karakterTomb[0] = 'e';
-	karakterTomb[1] = 'z';
-	karakterTomb[2] = 'e';
-
-	int osszeg = 0;
-	for (int i = 0; i < karakterTomb.Length; i++)
+	int elsoCsoportOsszpont = 0;
+	int masodikCsoportOsszpont = 0;
+	for (int i = 0; i < elsoCsop.Length; i++)
 	{
-		if (karakterTomb[i] == 'e') osszeg++;
+		elsoCsoportOsszpont += elsoCsop[i];
+		masodikCsoportOsszpont += masodikCsop[i];
 	}
-	Console.WriteLine($"ennnyi 'e' betű van benne: {osszeg}");
+	Console.WriteLine($"csop1 összpont: {elsoCsoportOsszpont}");
+	Console.WriteLine($"csop2 összpont: {masodikCsoportOsszpont}");
 
-	// ugyan ez string-ben
-	// (láthatjuk, hogy a string tényleg úgy viselkedik, mint egy tömb, pontosabban egy karakter tömb)
-	string szoveg = "eze";
-	int stringOsszeg = 0;
-	for (int i = 0; i < szoveg.Length; i++)
+	if (elsoCsoportOsszpont > masodikCsoportOsszpont)
 	{
-		if (szoveg[i] == 'e') stringOsszeg++;
+		Console.WriteLine("1. csoport nyert");
 	}
-	Console.WriteLine($"A stringben {stringOsszeg} darab 'e' betű van.");
+	else if(elsoCsoportOsszpont < masodikCsoportOsszpont)
+	{
+		Console.WriteLine("2. csoport nyert");
+	}
+	else
+	{
+		Console.WriteLine("döntetlen");
+	}
+}
 
-	// hozzunk létre egy 5 elemű tömböt 
-	// kezdő értékkel töltsükü fel, számoljuk meg,
-	// hogy mennyi 0tól nagyobb értéke vanó
-	int[] szamok = new int[5];
+/// <summary>
+/// VOLT-E a második csoportban 10 pontot szerző tanuló [eldöntés tétele]
+/// </summary>
+private static void feladat2(int[] masodikCsop)
+{
+	bool voltE = false;
+	int i = 0;
+	while (voltE==false && i<masodikCsop.Length)
+	{
+		if (masodikCsop[i] == 10)
+		{
+			voltE = true;
+		}
+		i++;
+	}
+	if (voltE == true) Console.WriteLine("volt olyan tanuló aki 10 pontot szerzett.");
+	else Console.WriteLine("Nem volt olyan tanuló aki 10 pontot szerzett volna.");
+}
+
+/// <summary>
+///  mennyi tanuló szerzett az első csoportból 0 pontot [megszámlálás tétele]
+/// </summary>
+private static void feladat1(int[] elsoCsop)
+{
+	// megszámlálás tétele
 	int szamlalo = 0;
-	Random random = new Random();
-	for (int i = 0; i < szamok.Length; i++)
+	for (int i = 0; i < elsoCsop.Length; i++)
 	{
-		szamok[i] = random.Next(101)-50; // [-50, 50]
-		Console.Write($"{szamok[i],5}"); // ez a vessző 5, azt jelenti, hogy minden karakter 5 szóköznyi helyet foglal
-		if (szamok[i]>0) szamlalo++;
+		if (elsoCsop[i] == 0) szamlalo++;
 	}
-	Console.WriteLine();
-	Console.WriteLine($"ennyi 0-tol nagyobb számod van: {szamlalo}");
+	Console.WriteLine($"1. feladat: {szamlalo}db");
+	
 }
 
-private static void osszegzesTetele2Feladat()
+// a main metódusban használjuk, hogy feltöltsünk egy tömböt, random számokkal
+private static int[] feltolt(int hossz, Random r)
 {
-	// 8 egész számú tömböt hozzunk létre [0,100] RANDOM
-	// majd az elemeit egy sorba írassuk ki,
-	// és vegye az átlagát a számokkal 3 tizedes pontosan
-	Random r = new Random();
-	int[] tomb = new int[8];
-	int osszeg = 0;
+	int[] tomb = new int[hossz];
 	for (int i = 0; i < tomb.Length; i++)
 	{
-		tomb[i] = r.Next(101);
-		Console.Write($"{tomb[i],5}");
-		osszeg += tomb[i];
+		tomb[i] = r.Next(11);//[0,10]
 	}
-	for (int i = 0; i < 2; i++) Console.WriteLine(); // 2 sortörés
-	Console.WriteLine($"átlag: {Math.Round(osszeg / (double)tomb.Length, 3)}");
+	return tomb;
 }
 
-private static void osszegzesTetele1Feladat()
+private static void eldontesTetele()
 {
-	char[] tomb = new char[4];
-	tomb[0] = 'A';
-	tomb[1] = 'L';
-	tomb[2] = 'M';
-	tomb[3] = 'A';
-	// karaktertömb elemeinek az ASCII kódbeli összegét számolja ki
-	int osszeg = 0;
-	// karaktertömbből gyártsunk stringet gyártunk
-	string osszefuzes = "";
+	// addig fusson míg nem talál olyat ami megfelel a feltételnek
+	// azaz van-e 10től nagyobb, ha igen lépjen ki a ciklusból
+	// de kezeljük le azt az eshetőséget, hogy nincs benne a feltételnekű
+	// megfelelő elem, ekkor végtelen ciklus alakulhat ki, ha nem kezeljük le
+	// egy összetett feltétellel a while ciklusban
+	int[] tomb = new int[] { 1, 10, 5, 3, 2, 4, 5, 7, 8, 10, 4, 1 };
+	bool vanE = false;
+	int i = 0;
+	// ciklus
+	while (vanE==false && i< tomb.Length)
+	{
+		if (tomb[i] > 10)
+		{
+			vanE = true;
+		}
+		i++;
+	}
+	if (vanE == true) Console.WriteLine("volt 10-nél nagyobb benne");
+	else Console.WriteLine("nem volt 10-nél nagyobb benne");
+}
+
+private static void megszamlalasTetele()
+{
+	int[] tomb = new int[] { 3, 5, 2 };
+	// MENNYI db páros szám van
+	int szamlalo = 0;
 	for (int i = 0; i < tomb.Length; i++)
 	{
-		osszeg += tomb[i]; // ez számként kezeli a karaktert
-		osszefuzes += tomb[i]; // ez folyamatosan összefűzi stringbe a karaktert
+		if (tomb[i] % 2 == 0) szamlalo++;
 	}
-	Console.WriteLine(osszeg);
-	Console.WriteLine(osszefuzes);
 }
 
 private static void osszegzesTetele()
 {
-	// tömbök elmeinek az összegét adja vissza:
-	// összeg=összeg+aktuális elem
-	// összeg+=aktuális elem
-
+	// számoljuk meg az összes elemet
+	// kezdő érték beállítása egy 3 elemű tömbnek, így:
 	int[] tomb = new int[3];
-	tomb[0] = 10;
-	tomb[1] = 5;
-	tomb[2] = 6;
+	tomb[0] = 2;
+	tomb[1] = 10;
+	tomb[2] = 5;
+	// vagy így:
+	int[] tomb2 = new int[] { 2, 10, 5 };
 
 	int osszeg = 0;
 	for (int i = 0; i < tomb.Length; i++)
 	{
-		osszeg = osszeg + tomb[i];
-		// osszeg += tomb[i];
+		osszeg += tomb[i];
+		Console.WriteLine(osszeg);
 	}
-	Console.WriteLine($"összegük: {osszeg}"); //21
-}
 
-private static void bevezeto()
-{
-	// a tömböknek egyik nagy előnye hogy nem kell ezer meg egy 
-	// változót létrehozni a különböző értékeknek
-	// a tömbben egyszerre rengeteg értéket el tudok menteni
-	int sz1 = 6;
-	int sz2 = 7;
-	// három elemű int tömb, kezőértékei 3 nulla
-	int[] tomb = new int[3];
+	// konkatenáció/összefűzés
+	string szoveg = "";
+
+	string firstname = "John";
+	string lastname = "Doe";
+	string szokoz = " ";
+	// szöveg részeket
+	szoveg += firstname;
+	szoveg += szokoz;
+	szoveg += lastname;
+	Console.WriteLine(szoveg); // John Doe
+
+	// karaktereket adunk hozzá
+	char[] karakterTomb = new char[] { 'A', 'L', 'M', 'A' };
+	string szoveg1 = "";
+	for (int i = 0; i < karakterTomb.Length; i++)
+	{
+		szoveg1 += karakterTomb[i];
+	}
+
 }
 ```
