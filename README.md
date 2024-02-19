@@ -1,152 +1,116 @@
 ```c#
 static void Main(string[] args)
 {
-	// összegzés: összeadom a tömb értékeit + konkatenációra is használjuk
-	// megszámlálás: FELTÉTEL mentén megszámolom azokat az értékeket amik ennek megfelelnek
-	// eldöntés tétele: ELDÖNTI, hogy van-e a tömbben egy adott tulajdonságú elem. Amint talál a ciklus leáll
-	osszegzesTeteleGyak();
-	megszamlalasTetele();
-	eldontesTetele();
-	int dec = binToDec("1000101");
-	string bin = decToBin(69);
-	string bin2 = decToBin2(69);
+	// összegzés:
+	// - számok/ karakaterek összeadása
+	// megszámlálás:
+	// - feltétel mentén megszámoljuk a tömb elemeit
+	// eldöntés:
+	// - true/false értékkel tér vissza, és addig megy míg nincs találat
+	// de egyben a végtelen ciklust ki kell kerülnünk
+	osszegzes();
+	megszamlalas();
+	elontesTetele();
+	matrix();
+	decToBin();
+	binToDec();
+	Console.ReadKey();
 }
 
-private static string decToBin2(int dec)
-{
-	string binReverse = "";
-	while (dec!=0)
-	{
-		binReverse += dec % 2;
-		dec /= 2;
-		// vagy dec=dec/2;
-	}
-	string bin = "";
-	for (int i = binReverse.Length - 1; i >= 0; i--)
-	{
-		bin += binReverse[i];
-	}
-	return bin;
-}
-
-private static string decToBin(int dec)
-{
-	int hatvany = 0;
-	while (Math.Pow(2,hatvany)<=dec)
-	{
-		hatvany++; 
-	}
-	hatvany-- ;
-
-	string bin = "";
-	int osszeg = 0;
-	for (int i = hatvany; i >= 0; i--)
-	{
-		if (osszeg + Math.Pow(2, i) <= dec)
-		{
-			osszeg += (int)Math.Pow(2, i);
-			bin += 1;
-		}
-		else
-		{
-			bin += 0;
-		}
-	}
-
-	return bin;
-
-}
-
-private static int binToDec(string bin)
+private static void binToDec()
 {
 	int dec = 0;
-	int kitevo = 0;
-	for (int i = bin.Length - 1; i >= 0; i--)
+	string bin = "11011";
+	int hatvany = 0;
+	for (int i = bin.Length - 1; i >= 0; i--, hatvany++)
 	{
 		if (bin[i] == '1')
 		{
-			dec+=(int) Math.Pow(2, kitevo);
+			dec += (int)Math.Pow(2, hatvany);
 		}
-		kitevo++;
 	}
-	return dec;
+	Console.WriteLine(dec);
 }
 
-private static void eldontesTetele()
+private static void decToBin()
 {
-	// van-e benne páros
-	// addig kell futnia amig nem talál egy olyan számot
-	// ami a feltételnek megfelel
-	// gondoskodni kell arról hogy egyáltalán nem találunk
-	// benne olyan számot/értéket akkor viszont
-	// végtelen ciklus ne képződjön
-	int[] tomb = new int[] { 1, 5, 3, 7, 3, 9 };
-	int index = 0;
-	bool vanE = false;
-	while (vanE==false && index<tomb.Length)
+	string bin = "";
+	int dec = 6;
+	while (dec!=0)
 	{
-		if(tomb[index] % 2 == 0)
-		{
-			vanE = true;
-		}
-		index++;
+		if (dec % 2 == 0) bin += 0;
+		else bin += 1;
+		dec /= 2;
 	}
-	
+	for (int i = bin.Length - 1; i >= 0; i--)
+	{
+		Console.Write(bin[i]);
+	}
+	Console.WriteLine();
 }
 
-private static void megszamlalasTetele()
+private static void matrix()
 {
-	// egy feltétel mentén nézzük meg az értékeket, ahol van találat
-	// növeljük a számláló értékét eggyel
-	int[] tomb = new int[] { 1, 2, 3, 4, 5, 6 };
+	// 2 dimenziós tömb
+	int[,] matrix = new int[2, 3]
+	{
+		{3,2,4},
+		{5,8,2},
+	};
+	Console.WriteLine(matrix[1,0]); // 5
+	Console.WriteLine(matrix[0,2]); // 4
+	Console.WriteLine(matrix[1,1]); // 8
+
+	Random r = new Random();
+	for (int i = 0; i < matrix.GetLength(0); i++) // sorokat pörgeti
+	{
+		for (int j = 0; j < matrix.GetLength(1); j++) // egy-egy sor elemeit
+		{
+			matrix[i, j] = r.Next(10); //[0,9]
+		}
+	}
+	// kiíratás
+	for (int i = 0; i < matrix.GetLength(0); i++) // sorokat pörgeti
+	{
+		for (int j = 0; j < matrix.GetLength(1); j++) // egy-egy sor elemeit
+		{
+			Console.Write($"{matrix[i, j]} ");
+		}
+		Console.WriteLine();
+		// Console.Write("\n");
+	}
+}
+
+private static void elontesTetele()
+{
+	int[] tomb = new int[3] { 2, 4, 6 };
+	bool vanE = false;
+	for (int i = 0; vanE=false && i<tomb.Length; i++)
+	{
+		if (tomb[i] % 4 == 0) vanE = true;
+	}
+	Console.WriteLine(vanE ? "van" : "nincs");
+}
+
+private static void megszamlalas()
+{
+	int[] tomb = new int[3] { 2, 4, 6 };
 	int szamlalo = 0;
 	for (int i = 0; i < tomb.Length; i++)
 	{
-		if (tomb[i] % 2==0)
-		{
-			szamlalo++;
-		}
+		if (tomb[i] % 4 == 0) szamlalo++;
 	}
-
+	Console.WriteLine(szamlalo);
 }
 
-private static void osszegzesTeteleGyak()
+private static void osszegzes()
 {
-	// osszeg=osszeg+aktualis_elem
-	int[] tomb = new int[5];
-	tomb[0] = 6;
-	tomb[1] = 6;
-	tomb[2] = 6;
-	tomb[3] = 6;
-	tomb[4] = 6;
-
-	// összegük
+	int[] tomb = new int[3] { 2, 4, 6 };
 	int osszeg = 0;
 	for (int i = 0; i < tomb.Length; i++)
 	{
-		//osszeg =osszeg+ tomb[i];
 		osszeg += tomb[i];
 	}
-
-
-	// konkatenáció/összefűzés
-	string szoveg = "";
-	szoveg += 'a';
-	szoveg += "a";
-	szoveg += "alm";
-	// dinamikusan feltölteni egy szöveget egy int tömbből
-	int[] ascii = new int[] { 65, 64, 66, 70 };
-	szoveg = "";
-	for (int i = 0; i < ascii.Length; i++)
-	{
-		szoveg += (char)ascii[i];
-	}
-	// dinamikusan feltölteni egy szöveget egy karakter tömbből
-	szoveg = "";
-	char[] chars = new char[] { 'B', 'K', 'V' };
-	for (int i = 0; i < chars.Length; i++)
-	{
-		szoveg += chars[i];
-	}
+	Console.WriteLine(osszeg);
 }
 ```
