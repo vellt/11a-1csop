@@ -1,116 +1,136 @@
 ```c#
 static void Main(string[] args)
 {
-	// összegzés:
-	// - számok/ karakaterek összeadása
-	// megszámlálás:
-	// - feltétel mentén megszámoljuk a tömb elemeit
-	// eldöntés:
-	// - true/false értékkel tér vissza, és addig megy míg nincs találat
-	// de egyben a végtelen ciklust ki kell kerülnünk
-	osszegzes();
-	megszamlalas();
-	elontesTetele();
-	matrix();
-	decToBin();
-	binToDec();
+	matrixIsm();
+	feladat1();
+	feladat2();
 	Console.ReadKey();
 }
 
-private static void binToDec()
+private static void feladat2()
 {
-	int dec = 0;
-	string bin = "11011";
-	int hatvany = 0;
-	for (int i = bin.Length - 1; i >= 0; i--, hatvany++)
+	string szoveg = "CASIC nevu kinai ceg megdonti a vasutipar rekordjait. Keszul az 1000 km/h-s vonat.";
+	// mennyi db betű van benne (kis/nagybetű)
+	// mennyi db magánhangzó van benne
+	// mennyi db mondatból áll
+	// mennyi db szám van benne
+	// hány %-a szám a teljes szövegnek, 2 tizedesre kerekítve
+	// van-e benne kisbetű
+	// van-e benne /-jel
+	// írassa ki a szöveget. Viszont, ha van benne nagybetű azt írja kisbetűssé
+
+	// mennyi db betű van benne (kis/nagybetű)
+	int betuDarab = 0;
+	for (int i = 0; i < szoveg.Length; i++)
 	{
-		if (bin[i] == '1')
+		if((szoveg[i]>='A' && szoveg[i]<='Z') || (szoveg[i]>='a' && szoveg[i] <= 'z'))
 		{
-			dec += (int)Math.Pow(2, hatvany);
+			betuDarab++;
 		}
 	}
-	Console.WriteLine(dec);
+	Console.WriteLine(betuDarab);
+
+	// mennyi db magánhangzó van benne
+	int maganhangzoDb = 0;
+	for (int i = 0; i < szoveg.Length; i++)
+	{
+		if(
+			szoveg[i]=='a' || szoveg[i]=='e' || szoveg[i]=='i' || szoveg[i]=='o' || szoveg[i] == 'u' ||
+		   szoveg[i] == 'A' || szoveg[i] == 'E' || szoveg[i] == 'I' || szoveg[i] == 'O' || szoveg[i] == 'U'
+		)
+		{
+			maganhangzoDb++;
+		}
+	}
+	Console.WriteLine(maganhangzoDb);
+
+	// mennyi db mondatból áll
+	int pontSzamlalo = 0;
+	for (int i = 0; i < szoveg.Length; i++)
+	{
+		if (szoveg[i] == '.') pontSzamlalo++;
+	}
+	Console.WriteLine(pontSzamlalo);
 }
 
-private static void decToBin()
+private static void feladat1()
 {
-	string bin = "";
-	int dec = 6;
-	while (dec!=0)
-	{
-		if (dec % 2 == 0) bin += 0;
-		else bin += 1;
-		dec /= 2;
-	}
-	for (int i = bin.Length - 1; i >= 0; i--)
-	{
-		Console.Write(bin[i]);
-	}
-	Console.WriteLine();
-}
-
-private static void matrix()
-{
-	// 2 dimenziós tömb
-	int[,] matrix = new int[2, 3]
-	{
-		{3,2,4},
-		{5,8,2},
-	};
-	Console.WriteLine(matrix[1,0]); // 5
-	Console.WriteLine(matrix[0,2]); // 4
-	Console.WriteLine(matrix[1,1]); // 8
-
+	// 2 csoport vett részt a tanulói versenyen. mindegyik csoport 10 főből áll
+	// mindegyik tanunló [1,10]-ban kapott pontot.
 	Random r = new Random();
-	for (int i = 0; i < matrix.GetLength(0); i++) // sorokat pörgeti
+	int[,] csapatok = new int[2, 10];
+	for (int i = 0; i < csapatok.GetLength(0); i++)
 	{
-		for (int j = 0; j < matrix.GetLength(1); j++) // egy-egy sor elemeit
+		for (int j = 0; j < csapatok.GetLength(1); j++)
 		{
-			matrix[i, j] = r.Next(10); //[0,9]
+			csapatok[i, j] = r.Next(10)+1; // i. csoport j. tanulója kapott pontot
 		}
 	}
-	// kiíratás
-	for (int i = 0; i < matrix.GetLength(0); i++) // sorokat pörgeti
+	// minden tanuló kapott valamilyen pontot
+	// feladatrészek:
+
+	// melyik csoport szerzett több pontot (összegzés)
+	int elsoSorOsszeg = 0;
+	int masodikSorOsszeg = 0;
+	for (int i = 0; i < csapatok.GetLength(1); i++)
 	{
-		for (int j = 0; j < matrix.GetLength(1); j++) // egy-egy sor elemeit
+		elsoSorOsszeg += csapatok[0, i];
+		masodikSorOsszeg += csapatok[1, i];
+	}
+	if (elsoSorOsszeg > masodikSorOsszeg)
+	{
+		Console.WriteLine("elso nyert");
+	}
+	else if(masodikSorOsszeg > elsoSorOsszeg)
+	{
+		Console.WriteLine("a második nyert");
+	}
+	else
+	{
+		Console.WriteLine("döntetlen");
+	}
+
+	// mennyi tanuló szerzett az 1. csoportból 1 pontot (megszámlálás)
+	int szamlalo = 0;
+	for (int i = 0; i < csapatok.GetLength(1); i++)
+	{
+		if (csapatok[0, i] == 1) szamlalo++;
+	}
+	Console.WriteLine(szamlalo);
+
+	// VAN-e a kettes csoportban aki 10 pontot szerzett (eldöntés tétele)
+	bool vanE = false;
+	int index = 0;
+	while (vanE==false && index<csapatok.GetLength(1))
+	{
+		if(csapatok[1,index]==10)
+		{
+			vanE = true;
+		}
+		index++;
+	}
+	for(int i = 0; vanE == false && index < csapatok.GetLength(1); i++) if (csapatok[1, index] == 10) vanE = true;
+	Console.WriteLine(vanE ? "van" : "nincs" + " benne");
+}
+
+private static void matrixIsm()
+{
+	int[,] matrix = new int[3, 4];
+	Random r = new Random();
+	for (int i = 0; i < matrix.GetLength(0); i++)
+	{
+		for (int j = 0; j < matrix.GetLength(1); j++)
+		{
+			matrix[i, j] = r.Next(10); // [0,9]
+		}
+	}
+	for (int i = 0; i < matrix.GetLength(0); i++)
+	{
+		for (int j = 0; j < matrix.GetLength(1); j++)
 		{
 			Console.Write($"{matrix[i, j]} ");
 		}
 		Console.WriteLine();
-		// Console.Write("\n");
 	}
-}
-
-private static void elontesTetele()
-{
-	int[] tomb = new int[3] { 2, 4, 6 };
-	bool vanE = false;
-	for (int i = 0; vanE=false && i<tomb.Length; i++)
-	{
-		if (tomb[i] % 4 == 0) vanE = true;
-	}
-	Console.WriteLine(vanE ? "van" : "nincs");
-}
-
-private static void megszamlalas()
-{
-	int[] tomb = new int[3] { 2, 4, 6 };
-	int szamlalo = 0;
-	for (int i = 0; i < tomb.Length; i++)
-	{
-		if (tomb[i] % 4 == 0) szamlalo++;
-	}
-	Console.WriteLine(szamlalo);
-}
-
-private static void osszegzes()
-{
-	int[] tomb = new int[3] { 2, 4, 6 };
-	int osszeg = 0;
-	for (int i = 0; i < tomb.Length; i++)
-	{
-		osszeg += tomb[i];
-	}
-	Console.WriteLine(osszeg);
 }
 ```
