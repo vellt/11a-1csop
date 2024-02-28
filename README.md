@@ -1,7 +1,6 @@
 ```c#
 static void Main(string[] args)
 {
-	matrixIsm();
 	feladat1();
 	feladat2();
 	Console.ReadKey();
@@ -9,128 +8,118 @@ static void Main(string[] args)
 
 private static void feladat2()
 {
-	string szoveg = "CASIC nevu kinai ceg megdonti a vasutipar rekordjait. Keszul az 1000 km/h-s vonat.";
-	// mennyi db betű van benne (kis/nagybetű)
-	// mennyi db magánhangzó van benne
-	// mennyi db mondatból áll
-	// mennyi db szám van benne
-	// hány %-a szám a teljes szövegnek, 2 tizedesre kerekítve
-	// van-e benne kisbetű
-	// van-e benne /-jel
-	// írassa ki a szöveget. Viszont, ha van benne nagybetű azt írja kisbetűssé
-
-	// mennyi db betű van benne (kis/nagybetű)
-	int betuDarab = 0;
-	for (int i = 0; i < szoveg.Length; i++)
+	// MÁTRIX ISMÉTLÉS
+	int[,] matrix = new int[2, 4]
 	{
-		if((szoveg[i]>='A' && szoveg[i]<='Z') || (szoveg[i]>='a' && szoveg[i] <= 'z'))
+		{2, 3, 4, 5 },
+		{2, 4, 5, 6 }
+	};
+	Random r = new Random();
+	for (int i = 0; i < matrix.GetLength(0); i++)//2
+	{
+		for (int j = 0; j < matrix.GetLength(1); j++) //4
 		{
-			betuDarab++;
+			// értékadás
+			matrix[i, j] = r.Next(10) + 1; //[1,10]
+			// értékkiíratás
+			Console.Write($"{matrix[i,j]}");
 		}
 	}
-	Console.WriteLine(betuDarab);
+	// -----------------------------------------------------------
 
-	// mennyi db magánhangzó van benne
-	int maganhangzoDb = 0;
-	for (int i = 0; i < szoveg.Length; i++)
+	/*
+	 egy 14 fős csoportban AAF-ból a tanár minden hónapban egy röpdolgozatot írat
+	eltelt 4 hónap. Mindenki kapott egy-egy jegyet [1,5]-ban minden dogára.
+	- mennyi az osztályátlag
+	- mennyi tanulónak van 3egésznél kisebb átlaga
+	- mennyi tanuló áll 5-re (4.6-tól)
+	- melyik tanulónak menniy az átlaga
+	- mennyi tanuló van az osztályátlag alatt
+	 */
+
+	int[,] osztaly = new int[14 , 4];
+	Random rand = new Random();
+	for (int i = 0; i < osztaly.GetLength(0); i++)
 	{
-		if(
-			szoveg[i]=='a' || szoveg[i]=='e' || szoveg[i]=='i' || szoveg[i]=='o' || szoveg[i] == 'u' ||
-		   szoveg[i] == 'A' || szoveg[i] == 'E' || szoveg[i] == 'I' || szoveg[i] == 'O' || szoveg[i] == 'U'
-		)
+		for (int j = 0; j < osztaly.GetLength(1); j++)
 		{
-			maganhangzoDb++;
+			osztaly[i, j] = rand.Next(5)+1;
 		}
 	}
-	Console.WriteLine(maganhangzoDb);
-
-	// mennyi db mondatból áll
-	int pontSzamlalo = 0;
-	for (int i = 0; i < szoveg.Length; i++)
+	// melyik tanulónak menniy az átlaga
+	for (int i = 0; i < osztaly.GetLength(0); i++)
 	{
-		if (szoveg[i] == '.') pontSzamlalo++;
+		int osszJegy = 0;
+		for (int j = 0; j < osztaly.GetLength(1); j++)
+		{
+			osszJegy += osztaly[i, j];
+		}
+		double atlag = (double)osszJegy / osztaly.GetLength(1);
+		Console.WriteLine($"{i+1}. tanuló átlaga: {atlag:0.00}");
 	}
-	Console.WriteLine(pontSzamlalo);
+
+
 }
 
 private static void feladat1()
 {
-	// 2 csoport vett részt a tanulói versenyen. mindegyik csoport 10 főből áll
-	// mindegyik tanunló [1,10]-ban kapott pontot.
-	Random r = new Random();
-	int[,] csapatok = new int[2, 10];
-	for (int i = 0; i < csapatok.GetLength(0); i++)
+	string szoveg = "CASIC nevu kinai ceg megdonti a " +
+		"vasutipar rekordjait. Keszul az 1000 km/h-s vonat.";
+
+	// mennyi db szám van benne
+	int darab = 0;
+	for (int i = 0; i < szoveg.Length; i++)
 	{
-		for (int j = 0; j < csapatok.GetLength(1); j++)
+		if (szoveg[i] >= '0' && szoveg[i] <= '9')
 		{
-			csapatok[i, j] = r.Next(10)+1; // i. csoport j. tanulója kapott pontot
+			darab++;
 		}
 	}
-	// minden tanuló kapott valamilyen pontot
-	// feladatrészek:
+	Console.WriteLine(darab);
 
-	// melyik csoport szerzett több pontot (összegzés)
-	int elsoSorOsszeg = 0;
-	int masodikSorOsszeg = 0;
-	for (int i = 0; i < csapatok.GetLength(1); i++)
-	{
-		elsoSorOsszeg += csapatok[0, i];
-		masodikSorOsszeg += csapatok[1, i];
-	}
-	if (elsoSorOsszeg > masodikSorOsszeg)
-	{
-		Console.WriteLine("elso nyert");
-	}
-	else if(masodikSorOsszeg > elsoSorOsszeg)
-	{
-		Console.WriteLine("a második nyert");
-	}
-	else
-	{
-		Console.WriteLine("döntetlen");
-	}
+	// hány %-a szám a teljes szövegnek, 2 tizedesre kerekítve
+	int osszKarakter = szoveg.Length;
+	int osszSzamKarakter = darab;
+	double szazalek = (Convert.ToDouble(osszSzamKarakter) / (double)osszKarakter) * 100;
+	Console.WriteLine(Math.Round(szazalek, 2));
 
-	// mennyi tanuló szerzett az 1. csoportból 1 pontot (megszámlálás)
-	int szamlalo = 0;
-	for (int i = 0; i < csapatok.GetLength(1); i++)
-	{
-		if (csapatok[0, i] == 1) szamlalo++;
-	}
-	Console.WriteLine(szamlalo);
-
-	// VAN-e a kettes csoportban aki 10 pontot szerzett (eldöntés tétele)
+	// van-e benne kisbetű
 	bool vanE = false;
 	int index = 0;
-	while (vanE==false && index<csapatok.GetLength(1))
+	while (vanE == false && index < szoveg.Length)
 	{
-		if(csapatok[1,index]==10)
+		if (szoveg[index] >= 'a' && szoveg[index] <= 'z')
 		{
 			vanE = true;
 		}
 		index++;
 	}
-	for(int i = 0; vanE == false && index < csapatok.GetLength(1); i++) if (csapatok[1, index] == 10) vanE = true;
-	Console.WriteLine(vanE ? "van" : "nincs" + " benne");
-}
+	Console.WriteLine((vanE ? "Van" : "Nincs") + " benne");
 
-private static void matrixIsm()
-{
-	int[,] matrix = new int[3, 4];
-	Random r = new Random();
-	for (int i = 0; i < matrix.GetLength(0); i++)
+	// van-e benne /-jel
+	vanE = false;
+	index = 0;
+	while (vanE == false && index < szoveg.Length)
 	{
-		for (int j = 0; j < matrix.GetLength(1); j++)
-		{
-			matrix[i, j] = r.Next(10); // [0,9]
-		}
+		if (szoveg[index] == '/') vanE = true;
+		index++;
 	}
-	for (int i = 0; i < matrix.GetLength(0); i++)
+	//for (int i = 0; vanE == false && i < szoveg.Length; i++) if (szoveg[i] == '/') vanE = true;
+	Console.WriteLine((vanE ? "Van" : "Nincs") + " benne");
+
+
+	// írassa ki a szöveget. Viszont, ha van benne nagybetű azt írja kisbetűssé
+	for (int i = 0; i < szoveg.Length; i++)
 	{
-		for (int j = 0; j < matrix.GetLength(1); j++)
+		if (szoveg[i] >= 'A' && szoveg[i] <= 'Z')
 		{
-			Console.Write($"{matrix[i, j]} ");
+			int aKisbetusAsciiKodja = szoveg[i] + 32;
+			Console.Write((char)aKisbetusAsciiKodja);
 		}
-		Console.WriteLine();
+		else
+		{
+			Console.Write(szoveg[i]);
+		}
 	}
 }
 ```
