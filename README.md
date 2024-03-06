@@ -1,13 +1,25 @@
 ```c#
 static void Main(string[] args)
 {
-	feladatBefejezese();
-	programozasiTetelek();
-	matrixFeladat();
+	folytatas();
+	folyamatabra();
 	Console.ReadKey();
 }
 
-private static void matrixFeladat()
+private static void folyamatabra()
+{
+	string[] tomb = { "sapka", "kalap", "kabat" };
+	// van-e benne 'k' betűvel kezdődő?
+	bool van = false;
+	for (int i = 0; van==false && i < tomb.Length; i++)
+	{
+		string szoveg = tomb[i];
+		if (szoveg[0] == 'k') van = true;
+	}
+	Console.WriteLine((van ? "van" : "nincs") + " benne k kezdőbetűs szöveg");
+}
+
+private static void folytatas()
 {
 	string[] csapat = new string[]
 	{
@@ -30,7 +42,7 @@ private static void matrixFeladat()
 		{
 			csapatok[i, j] = r.Next(3);
 			string eredmeny = "";
-			switch (csapatok[i,j])
+			switch (csapatok[i, j])
 			{
 				case 0: eredmeny = "vesztett"; break;
 				case 1: eredmeny = "döntetlen"; break;
@@ -40,140 +52,69 @@ private static void matrixFeladat()
 		}
 		Console.WriteLine();
 	}
-}
 
-private static void programozasiTetelek()
-{
-	int[] tomb = new int[] { 1, 2, 3 };
-
-	// összegzes
-	int osszesen = 0;
-	for (int i = 0; i < tomb.Length; i++)
+	// melyik csapatnak mennyi pontja van?
+	for (int i = 0; i < csapatok.GetLength(0); i++)
 	{
-		osszesen += tomb[i];
+		int osszpont = 0;
+		for (int j = 0; j < csapatok.GetLength(1); j++)
+		{
+			osszpont += csapatok[i, j];
+			if (csapatok[i, j] == 2) osszpont++;
+		}
+		Console.WriteLine($"{csapat[i]} {osszpont}");
 	}
-	Console.WriteLine(osszesen);
 
-	// megszámlálás tétele
-	int db = 0;
-	for (int i = 0; i < tomb.Length; i++)
+	// hányszor játszott döntetlent a FRADI
+	int fradiIndex = -1;
+	for (int i = 0; i < csapat.Length; i++)
 	{
-		if (tomb[i] == 1) db++;
+		if (csapat[i] == "FRADI") fradiIndex = i;
 	}
-	Console.WriteLine(db);
 
-	// eldöntés tétele
+	if (fradiIndex == -1)
+	{
+		Console.WriteLine("Nincs FRADI csapat!");
+	}
+	else
+	{
+		int dontetlenSzamlalo = 0;
+		for (int i = 0; i < csapatok.GetLength(1); i++)
+		{
+			if(csapatok[fradiIndex, i] == 1)
+			{
+				dontetlenSzamlalo++;
+			}
+		}
+		Console.WriteLine($"A FRADI {dontetlenSzamlalo}x játszott döntetlent");
+	}
+
+	// VOLT-e olyan csapat aki legalább 3 győzelme volt
 	bool van = false;
-	for (int i = 0; van==false  && i < tomb.Length; i++)
+	for (int i = 0; van==false && i < csapatok.GetLength(0); i++)
 	{
-		if (tomb[i] % 2 == 0) van = true;
+		int gyozelemSzamlalo = 0;
+		for (int j = 0; van==false && j < csapatok.GetLength(1); j++)
+		{
+			if (csapatok[i, j] == 2) gyozelemSzamlalo++;
+			if (gyozelemSzamlalo == 3) van = true;
+		}
 	}
 	Console.WriteLine(van ? "van" : "nincs");
-}
 
-private static void feladatBefejezese()
-{
-	/*
-	 egy 14 fős csoportban AAF-ból a tanár minden hónapban egy röpdolgozatot írat
-	eltelt 4 hónap. Mindenki kapott egy-egy jegyet [1,5]-ban minden dogára.
-	 */
-
-	int[,] osztaly = new int[14, 4];
-	Random rand = new Random();
-	for (int i = 0; i < osztaly.GetLength(0); i++)
+	// mennyi csoportkör átlag pontszáma:
+	int csoportpont = 0;
+	for (int i = 0; i < csapatok.GetLength(0); i++)
 	{
-		for (int j = 0; j < osztaly.GetLength(1); j++)
+		int osszpont = 0;
+		for (int j = 0; j < csapatok.GetLength(1); j++)
 		{
-			osztaly[i, j] = rand.Next(5) + 1;
+			osszpont += csapatok[i, j];
+			if (csapatok[i, j] == 2) osszpont++;
 		}
+		csoportpont += osszpont;
 	}
-	string[] nevek = new string[]
-	{
-		"Bela", "Geza", "Kuba", "Beci", "Jeck", "Rezső", "Borat",
-		"Zozo", "Huba", "Guba", "Emil", "csoki", "Dodó", "Gabi", 
-	};
-	// melyik tanulónak mennyi az átlaga
-	double osszAtlag = 0;
-	int haromEgesznelKisebb = 0;
-	int jeles = 0;
-	for (int i = 0; i < osztaly.GetLength(0); i++)
-	{
-		int osszJegyeEgyTanulonak = 0;
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			osszJegyeEgyTanulonak += osztaly[i, j];
-		}
-		double atlag = osszJegyeEgyTanulonak / (double)osztaly.GetLength(1); // 4 jegye van
-		osszAtlag += atlag;
-		if (atlag < 3) haromEgesznelKisebb++;
-		if (atlag >= 4.6) jeles++;
-		Console.WriteLine($"{nevek[i]} átlaga: {atlag:0.00}");
-	}
-	// mennyi az osztályátlag
-	double osztalyatlag = osszAtlag / osztaly.GetLength(0);
-	Console.WriteLine(Math.Round(osztalyatlag,2));
-
-	// mennyi tanulónak van 3egésznél kisebb átlaga
-	Console.WriteLine(haromEgesznelKisebb);
-
-	// mennyi tanuló áll 5 - re(4.6 - tól)
-	Console.WriteLine(jeles);
-
-	// mennyi tanuló van az osztályátlag alatt
-	int alat = 0;
-	for (int i = 0; i < osztaly.GetLength(0); i++)
-	{
-		int osszJegyeEgyTanulonak = 0;
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			osszJegyeEgyTanulonak += osztaly[i, j];
-		}
-		double atlag = osszJegyeEgyTanulonak / (double)osztaly.GetLength(1); // 4 jegye van
-		if (atlag<osztalyatlag)
-		{
-			alat++;
-		}
-	}
-	Console.WriteLine($"A tanulok akik az osztályátlag allat van:{alat}");
-
-	// Eldöntés tételeire épülő feladatok:
-	// VAN-e olyan tanuló aki bukásra áll? (1.6 alatt)
-	//double[] atlagok = new double[14];
-	bool van = false;
-	for (int i = 0; van==false && i < osztaly.GetLength(0); i++)
-	{
-		int osszJegyPerTanulo = 0;
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			osszJegyPerTanulo += osztaly[i, j];
-		}
-		double atlag = osszJegyPerTanulo / (double)osztaly.GetLength(1);
-		if (atlag < 1.6)van= true;
-		//atlagok[i] = atlag;
-	}
-	Console.WriteLine((van ? "van" : "nincs") + " benne bukott diák");
-
-	// VAN-e olyan tanuló aki csak egyest szerzett a 4 hónap alatt
-	van = false;
-	for (int i = 0; van==false && i < osztaly.GetLength(0) ; i++)
-	{
-		int osszJegy = 0;
-		for (int j = 0; j < osztaly.GetLength(1); j++)
-		{
-			osszJegy += osztaly[i, j];
-		}
-		if (osszJegy == osztaly.GetLength(1)) van = true;
-	}
-	Console.WriteLine((van ? "van" : "nincs") + " benne olyan diák, aki csak 1-est szerzett");
-
-	// VAN-e olyan tanuló akinek az első és az utolsó jegye ugyan az
-	van = false;
-	for (int i = 0; van==false && i < osztaly.GetLength(0); i++)
-	{
-		int elso = osztaly[i, 0];
-		int utolso = osztaly[i, osztaly.GetLength(1)-1];
-		if (elso == utolso) van = true;
-	}
-	Console.WriteLine((van?"van":"nincs")+ " benne olyan tanuló akinek az első és az utolsó jegye ugyan az");
+	double atlag = csoportpont / (double)csapatok.GetLength(0);
+	Console.WriteLine(Math.Round(atlag,2));
 }
 ```
