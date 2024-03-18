@@ -1,120 +1,89 @@
 ```c#
 static void Main(string[] args)
 {
-	folytatas();
-	folyamatabra();
+	ketodim();
+	egyDim();
 	Console.ReadKey();
 }
 
-private static void folyamatabra()
+private static void egyDim()
 {
-	string[] tomb = { "sapka", "kalap", "kabat" };
-	// van-e benne 'k' betűvel kezdődő?
-	bool van = false;
-	for (int i = 0; van==false && i < tomb.Length; i++)
+	Console.WriteLine("Add meg a szöveges tömb hosszát");
+	int hossz = Convert.ToInt32(Console.ReadLine());
+	string[] szovegek = new string[hossz];
+	for (int i = 0; i < szovegek.Length; i++)
 	{
-		string szoveg = tomb[i];
-		if (szoveg[0] == 'k') van = true;
+		szovegek[i] = Console.ReadLine();
 	}
-	Console.WriteLine((van ? "van" : "nincs") + " benne k kezdőbetűs szöveg");
-}
 
-private static void folytatas()
-{
-	string[] csapat = new string[]
+	// nagybetűsek legyenek kisbetűsek
+	for (int i = 0; i < szovegek.Length; i++)
 	{
-		"Real Madrid",
-		"FC Barca",
-		"Manchester City",
-		"Manchester United",
-		"FRADI"
-	};
-	// 5 csapat, 10 meccs
-	// 0-->vesztett, 1-->döntetlen, 2-->nyert
-	// vesztett-->0pont
-	// döntetlen-->1pont
-	// nyert-->3pont
-	Random r = new Random();
-	int[,] csapatok = new int[5, 10];
-	for (int i = 0; i < csapatok.GetLength(0); i++)
-	{
-		for (int j = 0; j < csapatok.GetLength(1); j++)
+		string szoveg = szovegek[i];
+		for (int j = 0; j < szoveg.Length; j++)
 		{
-			csapatok[i, j] = r.Next(3);
-			string eredmeny = "";
-			switch (csapatok[i, j])
+			if (szoveg[j] >= 'A' && szoveg[j] <= 'Z')
 			{
-				case 0: eredmeny = "vesztett"; break;
-				case 1: eredmeny = "döntetlen"; break;
-				case 2: eredmeny = "nyert"; break;
+				Console.Write((char)(szoveg[j] + 32));
 			}
-			Console.Write($"{eredmeny,12}");
+			else
+			{
+				Console.Write(szoveg[j]);
+			}
+			
 		}
 		Console.WriteLine();
 	}
 
-	// melyik csapatnak mennyi pontja van?
-	for (int i = 0; i < csapatok.GetLength(0); i++)
+	// mennyi olyan szó van amiben van a betű
+	int szamlalo = 0;
+	for (int i = 0; i < szovegek.Length; i++)
 	{
-		int osszpont = 0;
-		for (int j = 0; j < csapatok.GetLength(1); j++)
+		string szoveg = szovegek[i];
+		bool van = false;
+		for (int j = 0; van==false&& j < szoveg.Length; j++)
 		{
-			osszpont += csapatok[i, j];
-			if (csapatok[i, j] == 2) osszpont++;
+			if (szoveg[j] == 'a') van = true;
 		}
-		Console.WriteLine($"{csapat[i]} {osszpont}");
+		if (van) szamlalo++;
 	}
+	Console.WriteLine(szamlalo);
 
-	// hányszor játszott döntetlent a FRADI
-	int fradiIndex = -1;
-	for (int i = 0; i < csapat.Length; i++)
-	{
-		if (csapat[i] == "FRADI") fradiIndex = i;
-	}
 
-	if (fradiIndex == -1)
+}
+
+private static void ketodim()
+{
+	Random r = new Random();
+	int[,] honapok = new int[12, 30];
+
+	double osszatlagHomerseklet = 0;
+	for (int i = 0; i < honapok.GetLength(0); i++)
 	{
-		Console.WriteLine("Nincs FRADI csapat!");
-	}
-	else
-	{
-		int dontetlenSzamlalo = 0;
-		for (int i = 0; i < csapatok.GetLength(1); i++)
+		int osszesHomerseklet = 0;
+		for (int j = 0; j < honapok.GetLength(1); j++)
 		{
-			if(csapatok[fradiIndex, i] == 1)
-			{
-				dontetlenSzamlalo++;
-			}
+			honapok[i, j] = r.Next(21) - 10; //[-10,10]
+			osszesHomerseklet += honapok[i, j];
 		}
-		Console.WriteLine($"A FRADI {dontetlenSzamlalo}x játszott döntetlent");
+		double atlag = (double)osszesHomerseklet / honapok.GetLength(1);
+		osszatlagHomerseklet += atlag; // összegzés t
+		Console.WriteLine($"{i+1}. honap atlaghom: {atlag:0.00}");
 	}
+	double evesAtlag = osszatlagHomerseklet / honapok.GetLength(0);
+	Console.WriteLine($"Az éves átlaghőm: {evesAtlag:0.00}");
 
-	// VOLT-e olyan csapat aki legalább 3 győzelme volt
 	bool van = false;
-	for (int i = 0; van==false && i < csapatok.GetLength(0); i++)
+	for (int i = 0; van==false && i < honapok.GetLength(0); i++)
 	{
-		int gyozelemSzamlalo = 0;
-		for (int j = 0; van==false && j < csapatok.GetLength(1); j++)
+		int osszesHomerseklet = 0;
+		for (int j = 0; j < honapok.GetLength(1); j++)
 		{
-			if (csapatok[i, j] == 2) gyozelemSzamlalo++;
-			if (gyozelemSzamlalo == 3) van = true;
+			osszesHomerseklet += honapok[i, j];
 		}
+		double atlag = (double)osszesHomerseklet / honapok.GetLength(1);
+		if (atlag < -3) van = true;
 	}
 	Console.WriteLine(van ? "van" : "nincs");
-
-	// mennyi csoportkör átlag pontszáma:
-	int csoportpont = 0;
-	for (int i = 0; i < csapatok.GetLength(0); i++)
-	{
-		int osszpont = 0;
-		for (int j = 0; j < csapatok.GetLength(1); j++)
-		{
-			osszpont += csapatok[i, j];
-			if (csapatok[i, j] == 2) osszpont++;
-		}
-		csoportpont += osszpont;
-	}
-	double atlag = csoportpont / (double)csapatok.GetLength(0);
-	Console.WriteLine(Math.Round(atlag,2));
 }
 ```
