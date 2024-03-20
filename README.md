@@ -1,56 +1,78 @@
 ```c#
 static void Main(string[] args)
 {
-	tobbSoros();
-	egysoros();
-	
-	Console.ReadKey();
-}
+	/*
+	 Kiválasztás tétele: Eldöntés tételére épül, azaz egy feltételnek megfelelő elem találata esetén, ki kell lépnie a ciklusból, viszont vissza kell adnia a találat indexét
 
-private static void tobbSoros()
-{
-	string beolvas = File.ReadAllText("olvass_be.txt");
-	beolvas += " ";
-	//Console.WriteLine(beolvas);
-	string szabaly = "";
-	for (int i = 0; i < beolvas.Length; i++)
+	 Min/Max kiv. tétele: Rendezetlen elemek (szám, karakter, szöveg) közül kiváűlasztjuk a legnagyobbat vagy a legkisebbet.
+	 */
+
+	// Állítson elő 10 egész számot tartalmazó vektort.
+	// Elemeit [-50, 50] -ban töltse fel.
+	int[] tomb = new int[10];
+	Random r = new Random();
+	for (int i = 0; i < tomb.Length; i++)
 	{
-		if (beolvas[i] != ' ')
+		tomb[i] = r.Next(101) - 50;
+	}
+	// Írjuk ki az első pozitív szám értékét és indexét, ha van ilyen! 
+	int index = -1;
+	for (int i = 0; index==-1 && i < tomb.Length; i++)
+	{
+		if (tomb[i] >= 0)
 		{
-			szabaly += beolvas[i];
+			index = i;
+		}
+	}
+	if (index == -1)
+	{
+		Console.WriteLine("nincs benne pozitív szám");
+	}
+	else
+	{
+		Console.WriteLine($"van benne pozitív szám. {index+1}.");
+		Console.WriteLine($"tömb indexeditk eleme: {tomb[index]}");
+	}
+
+	// Az előző feladatban elkészített vektorban keresse meg a legnagyobb értéket.
+	int maxErtekIndexe = 0;
+	for (int i = 1; i < tomb.Length; i++)
+	{
+		if (tomb[i] > tomb[maxErtekIndexe])
+		{
+			maxErtekIndexe = i;
+		}
+	}
+	Console.WriteLine($"maximum értéke a tömbnek {tomb[maxErtekIndexe]}");
+	Console.WriteLine($"maximum értéke a tömbnek {maxErtekIndexe+1}. eleme");
+
+	//Állítson elő N elemű vektort. Elemeit [-10, 10] -ban töltse fel majd írja ki a képernyőre egy sorban! Az N értékét a felhasználótól kérje be!
+	Console.WriteLine("ad meg milyen hosszú legyen ");
+	int[] n = new int[Convert.ToInt32(Console.ReadLine())];
+	for (int i = 0; i < n.Length; i++)
+	{
+		n[i] = r.Next(21) - 10;
+		Console.Write($"{n[i],-5}");
+	}
+	// a.) Páros vagy páratlan számból van több?
+	int paros = 0;
+	int paratlan = 0;
+	for (int i = 0; i < n.Length; i++)
+	{
+		if (n[i]%2==0)
+		{
+			paros++;
 		}
 		else
 		{
-			// szóközt találtunk, akk megvizsgáljuk hogy eddig mi került
-			// a szabaly változóba
-			if (szabaly == "nl")
-			{
-				Console.WriteLine();
-			}
-			else
-			{
-				// első karakter az szám
-				int ismetlesSzama = Convert.ToInt32(szabaly[0].ToString());
-				string karakterParancs = "";
-				char kiir = ' ';
-				for (int j = 1; j < szabaly.Length; j++) karakterParancs += szabaly[j];
-				if (karakterParancs == "sp") kiir = ' ';
-				else if (karakterParancs == "bS") kiir = '\\';
-				else if (karakterParancs == "sQ") kiir = '\'';
-				else kiir = Convert.ToChar(karakterParancs);
-				for (int j = 0; j < ismetlesSzama; j++)
-				{
-					Console.Write(kiir);
-				}
-			}
-			szabaly = "";
+			paratlan++;
 		}
 	}
-	Console.WriteLine("\n");
-}
+	if (paros > paratlan) Console.WriteLine("a parosbol tobb van");
+	else if (paros < paratlan) Console.WriteLine("a paratlanbol van tobb");
+	else Console.WriteLine("a két szam egyenlo");
 
-private static void egysoros()
-{
-	File.ReadAllText("olvass_be.txt").Split(' ').ToList().Select(x => new { ismetlesSzama = x[0] == 'n' ? 1 : Convert.ToInt32(x[0].ToString()), karakter = x[0] == 'n' ? '\n' : (string.Join("", x.Skip(1)) == "sp" ? ' ' : string.Join("", x.Skip(1)) == "bS" ? '\\' : string.Join("", x.Skip(1)) == "sQ" ? '\'' : x[1]) }).ToList().ForEach(x => { for (int i = 0; i < x.ismetlesSzama; i++) Console.Write(x.karakter); });
+	Console.ReadKey();
+
 }
 ```
