@@ -1,78 +1,76 @@
 ```c#
-static void Main(string[] args)
+/*
+	Hozzunk létre egy N elemű tömböt
+	Az N-t konzolból kérjük be
+	N>3 !!
+	elemei [-12,50]-ból legyenek
+	Kérdés: Minden eleme különböző?
+ */
+while (true)
 {
-	/*
-	 Kiválasztás tétele: Eldöntés tételére épül, azaz egy feltételnek megfelelő elem találata esetén, ki kell lépnie a ciklusból, viszont vissza kell adnia a találat indexét
-
-	 Min/Max kiv. tétele: Rendezetlen elemek (szám, karakter, szöveg) közül kiváűlasztjuk a legnagyobbat vagy a legkisebbet.
-	 */
-
-	// Állítson elő 10 egész számot tartalmazó vektort.
-	// Elemeit [-50, 50] -ban töltse fel.
-	int[] tomb = new int[10];
+	Console.WriteLine("Adj meg egy 3nál nagyobb értéket");
+	int N = Convert.ToInt32(Console.ReadLine());
 	Random r = new Random();
-	for (int i = 0; i < tomb.Length; i++)
+	if (N > 3)
 	{
-		tomb[i] = r.Next(101) - 50;
-	}
-	// Írjuk ki az első pozitív szám értékét és indexét, ha van ilyen! 
-	int index = -1;
-	for (int i = 0; index==-1 && i < tomb.Length; i++)
-	{
-		if (tomb[i] >= 0)
+		int[] tomb = new int[N];
+		for (int i = 0; i < tomb.Length; i++)
 		{
-			index = i;
+			tomb[i] = r.Next(63)-12; // [-12,50]
+			Console.Write($"{tomb[i],-5}");
 		}
-	}
-	if (index == -1)
-	{
-		Console.WriteLine("nincs benne pozitív szám");
-	}
-	else
-	{
-		Console.WriteLine($"van benne pozitív szám. {index+1}.");
-		Console.WriteLine($"tömb indexeditk eleme: {tomb[index]}");
-	}
-
-	// Az előző feladatban elkészített vektorban keresse meg a legnagyobb értéket.
-	int maxErtekIndexe = 0;
-	for (int i = 1; i < tomb.Length; i++)
-	{
-		if (tomb[i] > tomb[maxErtekIndexe])
+		// döntsük el hogy minden elem egyedi-e?
+		bool igaz = false;
+		for (int i = 0; igaz==false && i < tomb.Length; i++)
 		{
-			maxErtekIndexe = i;
+			int keresedoErtek = tomb[i];
+			int szamlalo = 0;
+			for (int j = 0; igaz==false && j < tomb.Length; j++)
+			{
+				if (tomb[j] == keresedoErtek)
+				{
+					szamlalo++;
+					if (szamlalo == 2) igaz = true;
+				}
+			}
 		}
-	}
-	Console.WriteLine($"maximum értéke a tömbnek {tomb[maxErtekIndexe]}");
-	Console.WriteLine($"maximum értéke a tömbnek {maxErtekIndexe+1}. eleme");
-
-	//Állítson elő N elemű vektort. Elemeit [-10, 10] -ban töltse fel majd írja ki a képernyőre egy sorban! Az N értékét a felhasználótól kérje be!
-	Console.WriteLine("ad meg milyen hosszú legyen ");
-	int[] n = new int[Convert.ToInt32(Console.ReadLine())];
-	for (int i = 0; i < n.Length; i++)
-	{
-		n[i] = r.Next(21) - 10;
-		Console.Write($"{n[i],-5}");
-	}
-	// a.) Páros vagy páratlan számból van több?
-	int paros = 0;
-	int paratlan = 0;
-	for (int i = 0; i < n.Length; i++)
-	{
-		if (n[i]%2==0)
+		Console.WriteLine(igaz? "A tömb nem egyedi":"A tömb minden értéke egyedi");
+		// döntsük el hogy minden elem egyedi-e? (2. próbálkozás)
+		int[] temp = new int[N];
+		for (int i = 0; i < temp.Length; i++)
 		{
-			paros++;
+			temp[i] = 51;
+		}
+		int index = 0;
+		for (int i = 0; i < tomb.Length; i++)
+		{
+			int ertek = tomb[i];
+			bool van = false;
+			for (int j = 0; van==false && j < temp.Length; j++)
+			{
+				if (temp[j] == ertek)
+				{
+					van = true;
+				}
+			}
+			if (van==false)
+			{
+				temp[index++] = ertek;
+			}
+		}
+		if (index == tomb.Length)
+		{
+			Console.WriteLine("minden érték egyedi");
 		}
 		else
 		{
-			paratlan++;
+			Console.WriteLine("van benne ismétlődés");
 		}
+		Console.ReadKey();
 	}
-	if (paros > paratlan) Console.WriteLine("a parosbol tobb van");
-	else if (paros < paratlan) Console.WriteLine("a paratlanbol van tobb");
-	else Console.WriteLine("a két szam egyenlo");
-
-	Console.ReadKey();
-
+	else
+	{
+		Console.WriteLine("Nem jó értéket adtál meg!");
+	}
 }
 ```
