@@ -1,76 +1,104 @@
 ```c#
-/*
-	Hozzunk létre egy N elemű tömböt
-	Az N-t konzolból kérjük be
-	N>3 !!
-	elemei [-12,50]-ból legyenek
-	Kérdés: Minden eleme különböző?
- */
-while (true)
+static void Main(string[] args)
 {
-	Console.WriteLine("Adj meg egy 3nál nagyobb értéket");
-	int N = Convert.ToInt32(Console.ReadLine());
+	matrix();
+	vektor();
+	Console.ReadKey();
+}
+
+private static void vektor()
+{
+	int n = Convert.ToInt32( Console.ReadLine());
+	string[] tomb = new string[n];
+	int szamlalo = 0;
+	bool vanE = false;
+	for (int i = 0; i < n; i++)
+	{
+		tomb[i] = Console.ReadLine();
+		if (tomb[i].Length == n)
+		{
+			szamlalo++;
+		}
+
+	}
+	Console.WriteLine(szamlalo);
+	for (int j = 0; vanE == false && j < n; j++)
+	{
+		string szoveg = tomb[j];
+		char elsoKarakter = szoveg[0];
+		char utolsoKarakter = szoveg[szoveg.Length-1];
+		if (elsoKarakter == utolsoKarakter)
+		{
+			vanE = true;
+		}
+	}
+	Console.WriteLine(vanE ? "Van" : "Nincs");
+
+	for (int i = 0; i < tomb.Length; i++)
+	{
+		int szamlalo2 = 0;
+		string szoveg = tomb[i];
+		for (int j = 0; j < szoveg.Length; j++)
+		{
+			if (szoveg[j] == 'A' || szoveg[j] == 'E')
+			{
+				szamlalo2++;
+			}
+		}
+		Console.WriteLine($"A(z) {szoveg} {szamlalo2} darab msh volt a szóban");
+	}
+
+
+
+}
+
+private static void matrix()
+{
+	int[,] homerseklet = new int[12, 30];
 	Random r = new Random();
-	if (N > 3)
+	double osszAtlag = 0;
+	for (int honap = 0; honap < homerseklet.GetLength(0); honap++)
 	{
-		int[] tomb = new int[N];
-		for (int i = 0; i < tomb.Length; i++)
+		double osszHomerseklet = 0;
+		for (int nap = 0; nap < homerseklet.GetLength(1); nap++)
 		{
-			tomb[i] = r.Next(63)-12; // [-12,50]
-			Console.Write($"{tomb[i],-5}");
+			homerseklet[honap, nap] = r.Next(26)-15; //[-15,10]
+			osszHomerseklet += homerseklet[honap, nap];
 		}
-		// döntsük el hogy minden elem egyedi-e?
-		bool igaz = false;
-		for (int i = 0; igaz==false && i < tomb.Length; i++)
-		{
-			int keresedoErtek = tomb[i];
-			int szamlalo = 0;
-			for (int j = 0; igaz==false && j < tomb.Length; j++)
-			{
-				if (tomb[j] == keresedoErtek)
-				{
-					szamlalo++;
-					if (szamlalo == 2) igaz = true;
-				}
-			}
-		}
-		Console.WriteLine(igaz? "A tömb nem egyedi":"A tömb minden értéke egyedi");
-		// döntsük el hogy minden elem egyedi-e? (2. próbálkozás)
-		int[] temp = new int[N];
-		for (int i = 0; i < temp.Length; i++)
-		{
-			temp[i] = 51;
-		}
-		int index = 0;
-		for (int i = 0; i < tomb.Length; i++)
-		{
-			int ertek = tomb[i];
-			bool van = false;
-			for (int j = 0; van==false && j < temp.Length; j++)
-			{
-				if (temp[j] == ertek)
-				{
-					van = true;
-				}
-			}
-			if (van==false)
-			{
-				temp[index++] = ertek;
-			}
-		}
-		if (index == tomb.Length)
-		{
-			Console.WriteLine("minden érték egyedi");
-		}
-		else
-		{
-			Console.WriteLine("van benne ismétlődés");
-		}
-		Console.ReadKey();
+		double adotthonapAtlaga = osszHomerseklet / 30; // homerseklet.GetLength(1)
+		osszAtlag += adotthonapAtlaga;
 	}
-	else
+	double evesAtlag = osszAtlag / 12;
+	Console.WriteLine(evesAtlag);
+
+	bool vanE = false;
+
+	for (int honap = 0; vanE==false && honap < homerseklet.GetLength(0); honap++)
 	{
-		Console.WriteLine("Nem jó értéket adtál meg!");
+		int osszhomerseklet = 0;
+		for (int nap = 0; nap < homerseklet.GetLength(1); nap++)
+		{
+			osszhomerseklet += homerseklet[honap, nap];
+		}
+		double atlag = osszhomerseklet / 30.0;
+		if (evesAtlag>atlag)
+		{
+			vanE = true;
+		}
 	}
+	Console.WriteLine(vanE ? "van olyan amelyik az éves átlag  alatt van " : "nincs olyan amelyik az éves átlag alatt van ");
+	bool van = false;
+	for (int honap = 0; van==false && honap < homerseklet.GetLength(0); honap++)
+	{
+		for (int nap = 0; van==false && nap < homerseklet.GetLength(1); nap++)
+		{
+			if(homerseklet[honap,nap]==-2)
+			{
+				van = true;
+
+			}
+		}
+	}
+	Console.WriteLine(van ? "van" : "nincs");
 }
 ```
